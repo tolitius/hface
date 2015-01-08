@@ -7,7 +7,7 @@
     (:import goog.History))
 
 ;; -------------------------
-;; Views
+;; views
 
 (defn home-page []
   [:div [:h2 "welcome to hface"]
@@ -21,7 +21,7 @@
   [:div [(session/get :current-page)]])
 
 ;; -------------------------
-;; Routes
+;; routes
 (secretary/set-config! :prefix "#")
 
 (secretary/defroute "/" []
@@ -31,12 +31,12 @@
   (session/put! :current-page about-page))
 
 ;; -------------------------
-;; Initialize app
+;; initialize app
 (defn init! []
   (reagent/render-component [current-page] (.getElementById js/document "app")))
 
 ;; -------------------------
-;; History
+;; history
 (defn hook-browser-navigation! []
   (doto (History.)
     (events/listen
