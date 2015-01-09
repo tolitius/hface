@@ -22,10 +22,23 @@
   (.getDistributedObjects hz-instance))
 
 (defn find-all-maps [instance]
-  (filter #(instance? com.hazelcast.core.IMap %) (distributed-objects instance)))
+  (filter #(instance? com.hazelcast.core.IMap %) 
+          (distributed-objects instance)))
 
 (defn hz-map 
   ([name]
     (hz-map name (hz-instance)))
   ([name instance]
     (.getMap instance name)))
+
+;; modified "assoc"
+(defn put!
+  ([m k v] (doto m (.put k v)))
+  ([m k v & kvs]
+    (let [ret (doto m (.put k v))]
+      (if kvs
+        (if (next kvs)
+          (recur ret (first kvs) (second kvs) (nnext kvs))
+          (throw (IllegalArgumentException.
+                  "put expects even number of arguments after map/vector, found odd number")))
+        ret))))

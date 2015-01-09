@@ -22,7 +22,10 @@
                  [environ "1.0.0"]
                  [leiningen "2.5.0"]
                  [figwheel "0.1.5-SNAPSHOT"]
-                 [com.hazelcast/hazelcast "3.4"]]
+                 [com.hazelcast/hazelcast "3.4"]
+                 [com.cognitect/transit-clj "0.8.259"]
+                 [cheshire "5.4.0"]
+                 [org.clojure/tools.logging "0.3.1"]]
 
   :plugins [
             [lein-cljsbuild "1.0.3"]
