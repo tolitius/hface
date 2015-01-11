@@ -4,7 +4,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
-  :source-paths ["src/clj" "src/cljs"]
+  :source-paths ["src/clj" "src/cljs" "src/clj/hface"]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [com.facebook/react "0.11.2"]
@@ -24,8 +24,9 @@
                  [figwheel "0.1.5-SNAPSHOT"]
                  [com.hazelcast/hazelcast "3.4"]
                  [com.cognitect/transit-clj "0.8.259"]
-                 [cheshire "5.4.0"]
-                 [org.clojure/tools.logging "0.3.1"]]
+                 ;; [cheshire "5.4.0"]
+                 [org.clojure/tools.logging "0.3.1"]
+                 [org.clojure/java.data "0.1.1"]]
 
   :plugins [
             [lein-cljsbuild "1.0.3"]

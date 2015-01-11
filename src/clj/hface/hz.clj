@@ -7,9 +7,12 @@
   ([conf]
     (Hazelcast/newHazelcastInstance conf)))
 
+(defn all-instances []
+  (Hazelcast/getAllHazelcastInstances))
+
 (defn hz-instance 
   ([] 
-     (or (first (Hazelcast/getAllHazelcastInstances))
+     (or (first (all-instances))
          (new-instance)))
   ([conf]
     (Hazelcast/getOrCreateHazelcastInstance conf)))

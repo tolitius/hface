@@ -1,11 +1,13 @@
 (ns hface.stats.hmap
-  (:import [com.hazelcast.monitor LocalMapStats]))
+  (:require [clojure.string :as s]
+            [clojure.java.data :as data]))
 
 (defn stats [m]
-  (.getLocalMapStats m))
+  {:map (.getName m) 
+   :stats (data/from-java (.getLocalMapStats m))})
 
-(defn put-count [^LocalMapStats stats]
-  (.getPutOperationCount stats))
-
-(defn get-count [^LocalMapStats stats]
-  (.getGetOperationCount stats))
+#_(defn camel-to-hyphen [k]
+  (->> (map s/lower-case 
+            (s/split (name k) #"(?=[A-Z])"))
+    (s/join "-")
+    keyword))
