@@ -23,6 +23,7 @@
                  [leiningen "2.5.0"]
                  [figwheel "0.1.5-SNAPSHOT"]
                  [com.hazelcast/hazelcast "3.4"]
+                 [com.hazelcast/hazelcast-client "3.4"]
                  [com.cognitect/transit-clj "0.8.259"]
                  ;; [cheshire "5.4.0"]
                  [org.clojure/tools.logging "0.3.1"]
@@ -34,7 +35,7 @@
             [lein-ring "0.8.13"]
             [lein-asset-minifier "0.2.0"]]
 
-  :ring {:handler hface.handler/app}
+ui.routes {:handler hface.ui.routes/app}
 
   :min-lein-version "2.5.0"
 
@@ -66,7 +67,7 @@
                    :figwheel {:http-server-root "public"
                               :server-port 3449
                               :css-dirs ["resources/public/css"]
-                              :ring-handler hface.handler/app}
+                              :ring-handler hface.ui.routes/app}
 
                    :env {:dev? true}
 

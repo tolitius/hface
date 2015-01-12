@@ -1,4 +1,4 @@
-(ns hface.dev
+(ns hface.ui.dev
   (:require [cemerick.piggieback :as piggieback]
             [weasel.repl.websocket :as weasel]
             [leiningen.core.main :as lein]))

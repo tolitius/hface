@@ -1,6 +1,8 @@
 (ns hface.hz
   (:import [com.hazelcast.core Hazelcast]
-           [com.hazelcast.config XmlConfigBuilder]))
+           [com.hazelcast.config XmlConfigBuilder]
+           [com.hazelcast.client HazelcastClient]
+           [com.hazelcast.client.config ClientConfig]))
 
 (defn new-instance 
   ([] (new-instance nil))
@@ -17,6 +19,11 @@
   ([conf]
     (Hazelcast/getOrCreateHazelcastInstance conf)))
 
+(defn client-instance 
+  ([] (client-instance nil))
+  ([conf] 
+   (HazelcastClient/newHazelcastClient (ClientConfig.))))
+
 ;; creates a demo cluster
 (defn cluster-of [nodes & {:keys [conf]}]
   (repeatedly nodes #(new-instance conf)))
@@ -27,6 +34,13 @@
 (defn find-all-maps [instance]
   (filter #(instance? com.hazelcast.core.IMap %) 
           (distributed-objects instance)))
+
+;; adds a string kv pair to the local member of this hazelcast instance
+(defn add-member-attr [instance k v]
+  (doto instance 
+    (.getCluster)
+    (.getLocalMember)
+    (.setStringAttribute k v)))
 
 (defn hz-map 
   ([name]

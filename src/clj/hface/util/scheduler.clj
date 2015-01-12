@@ -1,4 +1,4 @@
-(ns hface.scheduler
+(ns hface.util.scheduler
   (:use [clojure.tools.logging])
   (:import [java.util.concurrent Executors TimeUnit]))
 
