@@ -10,3 +10,8 @@ pom.xml.asc
 /resources/public/js
 /out
 /.repl
+.idea/
+*.iml
+out/
+*.ipr
+*.iws

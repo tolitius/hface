@@ -5,6 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :source-paths ["src/clj" "src/cljs" "src/clj/hface"]
+  :java-source-paths ["src/java"]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [com.facebook/react "0.11.2"]
@@ -25,7 +26,8 @@
                  [com.hazelcast/hazelcast "3.4"]
                  [com.hazelcast/hazelcast-client "3.4"]
                  [com.cognitect/transit-clj "0.8.259"]
-                 ;; [cheshire "5.4.0"]
+                 [cheshire "5.4.0"]
+                 [clj-wallhack "1.0.1"]
                  [org.clojure/tools.logging "0.3.1"]
                  [org.clojure/java.data "0.1.1"]]
 
