@@ -8,17 +8,15 @@ import com.hazelcast.core.HazelcastInstanceAware;
 import java.io.Serializable;
 import java.util.concurrent.Callable;
 
-public class InstanceStatsTask
-    implements Callable<Object>, Serializable, HazelcastInstanceAware {
+public class InstanceStatsTask implements Callable<Object>, Serializable, HazelcastInstanceAware {
 
   private transient HazelcastInstance hazelcastInstance;
-
   private final static IFn gatherInstanceStats;
 
   static {
     IFn require = Clojure.var( "clojure.core", "require" );
-    require.invoke( Clojure.read( "hface.hz" ) );
-    gatherInstanceStats = Clojure.var( "hface.hz", "instance-stats" );
+    require.invoke( Clojure.read( "hface.stats" ) );
+    gatherInstanceStats = Clojure.var( "hface.stats", "instance-stats" );
   }
 
   public void setHazelcastInstance( HazelcastInstance hazelcastInstance ) {
@@ -29,15 +27,4 @@ public class InstanceStatsTask
 
     return gatherInstanceStats.invoke( hazelcastInstance );
   }
-
-
-//  public static void main( String[] args ) throws Exception {
-//
-//    HazelcastInstance hz = Hazelcast.newHazelcastInstance();
-//
-//    InstanceStatsTask ist = new InstanceStatsTask();
-//    ist.setHazelcastInstance( hz );
-//
-//    System.out.println( ist.call() );
-//  }
 }

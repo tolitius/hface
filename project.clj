@@ -22,7 +22,7 @@
                  [selmer "0.7.7"]
                  [environ "1.0.0"]
                  [leiningen "2.5.0"]
-                 [figwheel "0.1.5-SNAPSHOT"]
+                 [figwheel "0.2.1-SNAPSHOT"]
                  [com.hazelcast/hazelcast "3.4"]
                  [com.hazelcast/hazelcast-client "3.4"]
                  [com.cognitect/transit-clj "0.8.259"]
@@ -61,11 +61,12 @@ ui.routes {:handler hface.ui.routes/app}
                                   [ring/ring-devel "1.3.2"]
                                   [pjstadig/humane-test-output "0.6.0"]]
 
-                   :plugins [[lein-figwheel "0.2.0-SNAPSHOT"]]
+                   :plugins [[lein-figwheel "0.2.1-SNAPSHOT"]]
 
                    :injections [(require 'pjstadig.humane-test-output)
                                 (pjstadig.humane-test-output/activate!)]
 
+                   :aot :all
                    :figwheel {:http-server-root "public"
                               :server-port 3449
                               :css-dirs ["resources/public/css"]

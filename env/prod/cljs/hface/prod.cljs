@@ -1,4 +1,4 @@
 (ns hface.prod
-  (:require [hface.core :as core]))
+  (:require [hface]))
 
-(core/init!)
+(hface/init!)

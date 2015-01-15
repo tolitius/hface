@@ -1,14 +1,12 @@
 (ns hface.hz
-  (:require [wall.hack :refer [field]]
-            [cheshire.core :refer [parse-string]])
+  (:require [wall.hack :refer [field]])
   (:import [com.hazelcast.core Hazelcast]
            [com.hazelcast.config XmlConfigBuilder]
            [com.hazelcast.client HazelcastClient]
+           [com.hazelcast.client.impl HazelcastClientProxy]
            [com.hazelcast.client.config ClientConfig]
-           [com.hazelcast.management TimedMemberStateFactory]
            [com.hazelcast.instance HazelcastInstanceProxy 
-                                   HazelcastInstanceImpl]
-           [com.hazelcast.monitor TimedMemberState]))
+                                   HazelcastInstanceImpl]))
 
 (defn new-instance 
   ([] (new-instance nil))
@@ -64,30 +62,8 @@
   ([name instance]
     (.getMap instance name)))
 
-(defn instance-stats [instance]
-  (let [inst (if (instance? HazelcastInstanceProxy instance)
-               (field HazelcastInstanceProxy :original instance)
-               instance)]
-    (-> inst
-      (TimedMemberStateFactory.)
-      (.createTimedMemberState)
-      (.toJson)
-      (str)
-      (parse-string))))
-
-;; playground..
-
-
-;; modified "assoc"
-(defn put!
-  ([m k v] (doto m (.put k v)))
-  ([m k v & kvs]
-    (let [ret (doto m (.put k v))]
-      (if kvs
-        (if (next kvs)
-          (recur ret (first kvs) (second kvs) (nnext kvs))
-          (throw (IllegalArgumentException.
-                  "put expects even number of arguments after map/vector, found odd number")))
-        ret))))
-
-
+(defn proxy-to-instance [p]
+  (condp instance? p
+    HazelcastInstanceProxy (field HazelcastInstanceProxy :original p)
+    HazelcastClientProxy (field HazelcastClientProxy :client p)
+    p))
