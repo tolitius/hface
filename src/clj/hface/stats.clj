@@ -5,6 +5,9 @@
             [cheshire.core :refer [parse-string]]
             [hface.hz :refer [client-instance]])
   (:import  [com.hazelcast.management TimedMemberStateFactory]
+            [com.hazelcast.core HazelcastInstanceAware]
+            [java.util.concurrent Callable]
+            [java.io Serializable]
             [org.hface InstanceStatsTask]))
 
 (defn instance-stats [instance]
@@ -17,9 +20,22 @@
     parse-string
     keys-to-keywords))
 
+;;TODO: atom and hz instance are not serializable.. work in progress
+(defn instance-stats-task []
+  (let [instance (atom nil)]
+    (reify 
+      HazelcastInstanceAware
+        (setHazelcastInstance [_ inst]
+          (swap! instance inst))
+      Callable
+        (call [_]
+          (instance-stats @instance))
+      Serializable)))
+
 (defn raw-cluster-stats [instance]
   (let [member-statuses (-> instance
                           (.getExecutorService "stats-exec-service")
+                          ;; (.submitToAllMembers instance-stats-task))]
                           (.submitToAllMembers (InstanceStatsTask.)))]
     member-statuses))
 
@@ -30,13 +46,18 @@
    (map #(.get %) 
         (vals (raw-cluster-stats instance)))))
 
-(defn merge-map-stats [cs]
-  (let [ms (map #(-> % :member-state :map-stats) cs)
+(defn merge-stats [kind c-stats]
+  (let [ms (map #(-> % :member-state kind) c-stats)
         ms (->> ms 
                 (apply interleave) 
                 (group-by first))
         groupped (do-with-values ms #(map second %))]
     (do-with-values groupped #(apply merge-with + %))))
+
+(defn cluster-members [c-stats]
+  (-> (filter (comp boolean :master) c-stats) 
+    first 
+    :member-list))
 
 (defn m-stats [m]
   {:map (.getName m) 
