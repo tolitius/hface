@@ -10,6 +10,7 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [com.facebook/react "0.11.2"]
                  [reagent "0.4.3"]
+                 [monr "0.1.5"]
                  [reagent-utils "0.1.0"]
                  [secretary "1.2.1"]
                  [org.clojure/clojurescript "0.0-2496" :scope "provided"]
@@ -26,6 +27,7 @@
                  [com.hazelcast/hazelcast "3.4"]
                  [com.hazelcast/hazelcast-client "3.4"]
                  [com.cognitect/transit-clj "0.8.259"]
+                 [com.cognitect/transit-cljs "0.8.199"]
                  [cheshire "5.4.0"]
                  [clj-wallhack "1.0.1"]
                  [org.clojure/tools.logging "0.3.1"]
@@ -71,6 +73,8 @@ ui.routes {:handler hface.ui.routes/app}
                               :server-port 3449
                               :css-dirs ["resources/public/css"]
                               :ring-handler hface.ui.routes/app}
+
+                   :ring {:handler hface.ui.routes/app}
 
                    :env {:dev? true}
 

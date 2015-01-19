@@ -1,7 +1,7 @@
 (ns hface.ui.routes
   (:require [hface.stats :refer [cluster-stats]]
             [hface.hz :refer [client-instance]]
-            [hface.util :refer [to-transit]]
+            [hface.util :refer [to-transit every]]
             [hface.ui.dev :refer [browser-repl start-figwheel]]
             [compojure.core :refer [GET defroutes]]
             [compojure.route :refer [not-found resources]]
@@ -13,12 +13,20 @@
 (def hz 
   (delay (client-instance)))
 
+(def stats (atom {}))
+
+(defn refresh-stats [seconds s]
+  (every seconds #(reset! s 
+                          (to-transit (cluster-stats @hz)))))
+
 (defroutes routes
   (GET "/" [] (render-file "templates/index.html" {:dev (env :dev?)}))
-  (GET "/cluster-stats" [] (to-transit (cluster-stats @hz)))
+  ;; (GET "/cluster-stats" [] (to-transit (cluster-stats @hz)))
+  (GET "/cluster-stats" [] @stats)
   (resources "/")
   (not-found "Not Found"))
 
 (def app
   (let [handler (wrap-defaults routes site-defaults)]
+    (refresh-stats 1 stats)
     (if (env :dev?) (wrap-exceptions handler) handler)))
