@@ -33,32 +33,45 @@
           (instance-stats @instance))
       Serializable)))
 
-(defn raw-cluster-stats [instance]
+(defn per-instance-stats [instance]
   (let [member-statuses (-> instance
                           (.getExecutorService "stats-exec-service")
                           ;; (.submitToAllMembers instance-stats-task))]
                           (.submitToAllMembers (InstanceStatsTask.)))]
-    member-statuses))
+    (into {} 
+      (map (fn [futr]
+             (let [stats (.get futr)]   ;; getting stats for an instance future
+               {(-> stats 
+                    :member-state 
+                    :address 
+                    keyword) 
+                stats}))                ;; {:192.168.1.9:5703 {...}, ...}
+        (vals member-statuses)))))
+
+(defn merge-stats [kind i-stats]
+  (let [ms (map #(-> % :member-state kind) i-stats)
+        ms (->> ms 
+                (apply interleave) 
+                (group-by first))
+        groupped (do-with-values ms #(map second %))]
+    {kind (do-with-values groupped #(apply merge-with + %))}))
+
+(defn aggregate-across-cluster [i-stats]
+  (into {} 
+        (map #(merge-stats % i-stats) 
+          [:map-stats 
+           :multi-map-stats 
+           :queue-stats 
+           :topic-stats 
+           :executor-stats])))
 
 (defn cluster-stats 
   ([] 
    (cluster-stats (client-instance)))
   ([instance]
-   (map #(.get %) 
-        (vals (raw-cluster-stats instance)))))
-
-(defn merge-stats [kind c-stats]
-  (let [ms (map #(-> % :member-state kind) c-stats)
-        ms (->> ms 
-                (apply interleave) 
-                (group-by first))
-        groupped (do-with-values ms #(map second %))]
-    (do-with-values groupped #(apply merge-with + %))))
-
-(defn cluster-members [c-stats]
-  (-> (filter (comp boolean :master) c-stats) 
-    first 
-    :member-list))
+   (let [i-stats (per-instance-stats instance)]
+     {:per-node i-stats
+      :aggregated (aggregate-across-cluster (vals i-stats))})))
 
 (defn m-stats [m]
   {:map (.getName m) 
