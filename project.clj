@@ -59,7 +59,8 @@ ui.routes {:handler hface.ui.routes/app}
 
                    :dependencies [[ring-mock "0.1.5"]
                                   [ring/ring-devel "1.3.2"]
-                                  [pjstadig/humane-test-output "0.6.0"]]
+                                  [pjstadig/humane-test-output "0.6.0"]
+                                  [org.hface/hface "0.1.0"]]            ;; is needed until figweel bug (https://github.com/bhauman/lein-figwheel/issues/68) is fixed
 
                    :plugins [[lein-figwheel "0.2.1-SNAPSHOT"]]
 

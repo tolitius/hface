@@ -20,7 +20,8 @@
     parse-string
     keys-to-keywords))
 
-;;TODO: atom and hz instance are not serializable.. work in progress
+;; TODO: atom and hz instance are not serializable.. work in progress
+;; need this due to a figwheel bug: https://github.com/bhauman/lein-figwheel/issues/68#issuecomment-70163386
 (defn instance-stats-task []
   (let [instance (atom nil)]
     (reify 

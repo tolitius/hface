@@ -15,7 +15,7 @@
 
 (defroutes routes
   (GET "/" [] (render-file "templates/index.html" {:dev (env :dev?)}))
-  (GET "/cluster-stats" [] (to-transit (cluster-stats hz)))
+  (GET "/cluster-stats" [] (to-transit (cluster-stats @hz)))
   (resources "/")
   (not-found "Not Found"))
 
