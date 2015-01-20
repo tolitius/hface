@@ -1,33 +1,11 @@
 (ns hface
     (:require [reagent.core :as reagent :refer [atom]]
               [reagent.session :as session]
-              [cognitect.transit :as t]
               [secretary.core :as secretary :include-macros true]
               [goog.events :as events]
-              [goog.net.XhrIo :as xhr]
-              [goog.history.EventType :as EventType])
+              [goog.history.EventType :as EventType]
+              [hface.stats :refer [show-stats]])
     (:import goog.History))
-
-(defn refresh-stats [stats]
-  (xhr/send "cluster-stats"
-            (fn [event]
-              (let [t-reader (t/reader :json)
-                    res (-> event .-target .getResponseText)]
-                (reset! stats (t/read t-reader res))))
-            "GET"))
-
-;; -------------------------
-;; views
-
-(defn map-stats [s]
-  (for [[k v] (-> s :aggregated :map-stats)] 
-    [:div (str k) "-> { get-count: " (:get-count v) ", put-count: " (:put-count v) "}"]))
-
-(defn show-stats []
-  (let [stats (atom {})]
-    (fn []
-      (js/setTimeout #(refresh-stats stats) 1000)
-      [:div "maps: " (map-stats @stats)])))
 
 (defn home-page []
   [:div [:h2 "welcome to hface"]

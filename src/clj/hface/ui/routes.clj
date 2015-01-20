@@ -1,6 +1,5 @@
 (ns hface.ui.routes
   (:require [hface.stats :refer [cluster-stats]]
-            [hface.hz :refer [client-instance]]
             [hface.util :refer [to-transit every]]
             [hface.ui.dev :refer [browser-repl start-figwheel]]
             [compojure.core :refer [GET defroutes]]
@@ -10,14 +9,11 @@
             [environ.core :refer [env]]
             [prone.middleware :refer [wrap-exceptions]]))
 
-(def hz 
-  (delay (client-instance)))
-
 (def stats (atom {}))
 
 (defn refresh-stats [seconds s]
   (every seconds #(reset! s 
-                          (to-transit (cluster-stats @hz)))))
+                          (to-transit (cluster-stats)))))
 
 (defroutes routes
   (GET "/" [] (render-file "templates/index.html" {:dev (env :dev?)}))

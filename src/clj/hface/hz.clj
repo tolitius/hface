@@ -23,10 +23,22 @@
   ([conf]
     (Hazelcast/getOrCreateHazelcastInstance conf)))
 
-(defn client-instance 
-  ([] (client-instance nil))
-  ([conf] 
-   (HazelcastClient/newHazelcastClient (ClientConfig.))))
+(def c-instance
+  (delay (atom (HazelcastClient/newHazelcastClient 
+                 (ClientConfig.)))))
+
+(defn instance-active? [instance]
+  (-> instance
+      (.getLifecycleService)
+      (.isRunning)))
+
+(defn client-instance []
+  (let [ci @@c-instance]
+    (if (instance-active? ci)
+      ci
+      (reset! @c-instance 
+              (HazelcastClient/newHazelcastClient 
+                (ClientConfig.))))))
 
 ;; creates a demo cluster
 (defn cluster-of [nodes & {:keys [conf]}]

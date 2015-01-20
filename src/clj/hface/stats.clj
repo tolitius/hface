@@ -1,9 +1,9 @@
 (ns hface.stats
-  (:require [hface.hz :refer [proxy-to-instance]]
+  (:require [hface.hz :refer [proxy-to-instance client-instance]]
             [hface.util :refer [keys-to-keywords do-with-values]]
             [clojure.java.data :as data]
-            [cheshire.core :refer [parse-string]]
-            [hface.hz :refer [client-instance]])
+            [clojure.tools.logging :refer [warn]]
+            [cheshire.core :refer [parse-string]])
   (:import  [com.hazelcast.management TimedMemberStateFactory]
             [com.hazelcast.core HazelcastInstanceAware]
             [java.util.concurrent Callable]
@@ -33,20 +33,22 @@
           (instance-stats @instance))
       Serializable)))
 
+(defn- member-statuses [instance]
+  (-> instance
+      (.getExecutorService "stats-exec-service")
+      ;; (.submitToAllMembers instance-stats-task))]
+      (.submitToAllMembers (InstanceStatsTask.))))
+
 (defn per-instance-stats [instance]
-  (let [member-statuses (-> instance
-                          (.getExecutorService "stats-exec-service")
-                          ;; (.submitToAllMembers instance-stats-task))]
-                          (.submitToAllMembers (InstanceStatsTask.)))]
-    (into {} 
-      (map (fn [futr]
-             (let [stats (.get futr)]   ;; getting stats for an instance future
-               {(-> stats 
-                    :member-state 
-                    :address 
-                    keyword) 
-                stats}))                ;; {:192.168.1.9:5703 {...}, ...}
-        (vals member-statuses)))))
+  (into {} 
+    (map (fn [futr]
+           (let [stats (.get futr)]   ;; getting stats for an instance future
+             {(-> stats 
+                  :member-state 
+                  :address 
+                  keyword) 
+              stats}))                ;; {:192.168.1.9:5703 {...}, ...}
+      (vals (member-statuses instance)))))
 
 (defn merge-stats [kind i-stats]
   (let [ms (map #(-> % :member-state kind) i-stats)
@@ -65,13 +67,10 @@
            :topic-stats 
            :executor-stats])))
 
-(defn cluster-stats 
-  ([] 
-   (cluster-stats (client-instance)))
-  ([instance]
-   (let [i-stats (per-instance-stats instance)]
+(defn cluster-stats []
+   (let [i-stats (per-instance-stats (client-instance))]
      {:per-node i-stats
-      :aggregated (aggregate-across-cluster (vals i-stats))})))
+      :aggregated (aggregate-across-cluster (vals i-stats))}))
 
 (defn m-stats [m]
   {:map (.getName m) 
