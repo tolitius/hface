@@ -8,12 +8,12 @@
     (:import goog.History))
 
 (defn home-page []
-  [:div [:h2 "welcome to hface"]
-   [:div [show-stats]]
-   [:div [:a {:href "#/about"} "about hface"]]])
+  [:div [:h3 "hface: look you cluster in the face"]
+   [:div [show-stats]]])
+   ;; [:div [:a {:href "#/about"} "about hface"]]])
 
 (defn about-page []
-  [:div [:h2 "about hface"]
+  [:div [:h3 "about hface"]
    [:div [:a {:href "#/"} "hface home"]]])
 
 (defn current-page []
