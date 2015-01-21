@@ -19,6 +19,7 @@
                      ", put-count: " (:put-count v) 
                      ", get-rate: " (:get-rate v) 
                      ", put-rate: " (:put-rate v) 
+                     ", hit-rate: " (:hit-rate v) 
      "}"]))
 
 (defn members [s]
@@ -29,5 +30,5 @@
     (fn []
       (js/setTimeout #(refresh-stats stats) refresh-interval)
       [:div
-        [:div "members: " (for [m (members @stats)] [:span m " "])]
+        [:div [:h6 "members: " (for [m (members @stats)] [:span m " "])]]
         [:div "maps: " (map-stats @stats)]])))
