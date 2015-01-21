@@ -1,0 +1,81 @@
+;; an example aggregated stats to work off of
+(comment
+
+{:map-stats
+ {:appl
+  {:owned-entry-count 0,
+   :dirty-entry-count 0,
+   :total-put-latencies 0,
+   :remove-count 0,
+   :backup-entry-memory-cost 0,
+   :max-get-latency 0,
+   :total-remove-latencies 0,
+   :total-get-latencies 0,
+   :hits 0,
+   :max-remove-latency 0,
+   :put-count 0,
+   :heap-cost 0,
+   :number-of-other-operations 0,
+   :max-put-latency 0,
+   :last-update-time 0,
+   :owned-entry-memory-cost 0,
+   :last-access-time 0,
+   :backup-entry-count 0,
+   :creation-time 2843698120438,
+   :backup-count 2,
+   :locked-entry-count 0,
+   :number-of-events 0,
+   :get-count 0}},
+ :multi-map-stats
+ {:foo
+  {:owned-entry-count 0,
+   :dirty-entry-count 0,
+   :total-put-latencies 0,
+   :remove-count 0,
+   :backup-entry-memory-cost 0,
+   :max-get-latency 0,
+   :total-remove-latencies 0,
+   :total-get-latencies 0,
+   :hits 0,
+   :max-remove-latency 0,
+   :put-count 0,
+   :heap-cost 0,
+   :number-of-other-operations 0,
+   :max-put-latency 0,
+   :last-update-time 0,
+   :owned-entry-memory-cost 0,
+   :last-access-time 0,
+   :backup-entry-count 0,
+   :creation-time 2843698490730,
+   :backup-count 0,
+   :locked-entry-count 0,
+   :number-of-events 0,
+   :get-count 0}},
+ :queue-stats
+ {:bar
+  {:owned-item-count 0,
+   :number-of-polls 0,
+   :max-age 0,
+   :number-of-offers 0,
+   :backup-item-count 0,
+   :number-of-empty-polls 0,
+   :min-age 0,
+   :number-of-other-operations 0,
+   :ave-age 0,
+   :number-of-rejected-offers 0,
+   :creation-time 2843698353728,
+   :number-of-events 0}},
+ :topic-stats
+ {:zoo
+  {:creation-time 2843698437950,
+   :total-publishes 0,
+   :total-received-messages 0}},
+ :executor-stats
+ {:stats-exec-service
+  {:creation-time 2843698061561,
+   :pending 0,
+   :started 22,
+   :total-start-latency 0,
+   :completed 20,
+   :total-execution-time 125}}}
+)

@@ -76,7 +76,8 @@ ui.routes {:handler hface.ui.routes/app}
 
                    :ring {:handler hface.ui.routes/app}
 
-                   :env {:dev? true}
+                   :env {:dev? true
+                         :refresh-interval 1}
 
                    :cljsbuild {:builds {:app {:source-paths ["env/dev/cljs"]
                                               :compiler {:source-map true}}}}}

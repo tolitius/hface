@@ -1,5 +1,6 @@
 (ns hface.ui.routes
-  (:require [hface.refresh :refer [refresh-stats stats]]
+  (:require [hface.refresh :refer [collect-stats stats]]
+            [hface.util :refer [to-transit]]
             [hface.ui.dev :refer [browser-repl start-figwheel]]
             [compojure.core :refer [GET defroutes]]
             [compojure.route :refer [not-found resources]]
@@ -10,11 +11,11 @@
 
 (defroutes routes
   (GET "/" [] (render-file "templates/index.html" {:dev (env :dev?)}))
-  (GET "/cluster-stats" [] @stats)
+  (GET "/cluster-stats" [] (to-transit @stats))
   (resources "/")
   (not-found "Not Found"))
 
 (def app
   (let [handler (wrap-defaults routes site-defaults)]
-    (refresh-stats)
+    (collect-stats (or (env :refresh-interval) 1))
     (if (env :dev?) (wrap-exceptions handler) handler)))
