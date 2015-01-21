@@ -42,12 +42,12 @@
 (defn per-instance-stats [instance]
   (into {} 
     (map (fn [futr]
-           (let [stats (.get futr)]   ;; getting stats for an instance future
+           (let [stats (.get futr)]         ;; getting stats for an instance future
              {(-> stats 
                   :member-state 
                   :address 
                   keyword) 
-              stats}))                ;; {:192.168.1.9:5703 {...}, ...}
+              stats}))                      ;; {:192.168.1.9:5703 {...}, ...}
       (vals (member-statuses instance)))))
 
 (defn merge-stats [kind i-stats]
