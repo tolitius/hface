@@ -1,12 +1,10 @@
 (ns hface.hz
   (:require [wall.hack :refer [field]])
   (:import [com.hazelcast.core Hazelcast]
-           [com.hazelcast.config XmlConfigBuilder]
            [com.hazelcast.client HazelcastClient]
            [com.hazelcast.client.impl HazelcastClientProxy]
            [com.hazelcast.client.config ClientConfig]
-           [com.hazelcast.instance HazelcastInstanceProxy 
-                                   HazelcastInstanceImpl]))
+           [com.hazelcast.instance HazelcastInstanceProxy]))
 
 (defn new-instance 
   ([] (new-instance nil))
