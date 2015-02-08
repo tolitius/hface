@@ -4,13 +4,15 @@
               [secretary.core :as secretary :include-macros true]
               [goog.events :as events]
               [goog.history.EventType :as EventType]
-              [hface.stats :refer [show-stats]])
+              [hface.stats :refer [show-stats refresh-it]])
     (:import goog.History))
 
 (defn home-page []
-  [:div [:h3 "hface: look you cluster in the face"]
-   [:div [show-stats]]])
-   ;; [:div [:a {:href "#/about"} "about hface"]]])
+  (let [stats (atom {})]
+    [:div [:h3 "hface: look you cluster in the face"]
+     [:div [show-stats stats]]
+     [:div (refresh-it stats)]]))
+     ;; [:div [:a {:href "#/about"} "about hface"]]])
 
 (defn about-page []
   [:div [:h3 "about hface"]

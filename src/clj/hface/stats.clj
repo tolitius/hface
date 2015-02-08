@@ -69,14 +69,18 @@
 
 (defn non-negative-average [xs]
   (let [nums (filter (comp not neg?) xs)]
-    (float (/ (reduce + nums) (count nums)))))
+    (if (seq nums)
+      (float (/ (reduce + nums) (count nums)))
+      0)))
 
 (defn aggregate-top [stats]
-  (into {} 
-        (for [[k v] (apply merge-with vector
-                           (map (comp :runtime-props :member-state) 
-                                (vals stats)))] 
-          [k (non-negative-average (flatten v))])))
+  (if (> (count stats) 1)    ;; more than one node in the cluster
+    (into {} 
+          (for [[k v] (apply merge-with vector
+                             (map (comp :runtime-props :member-state) 
+                                  (vals stats)))] 
+            [k (non-negative-average (flatten v))]))
+    (-> stats vals first :member-state :runtime-props)))
 
 (defn with-top [instance-stats aggr-stats]
   (let [top-stats (aggregate-top instance-stats)]
