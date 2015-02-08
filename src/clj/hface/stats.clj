@@ -67,10 +67,26 @@
            :topic-stats 
            :executor-stats])))
 
+(defn non-negative-average [xs]
+  (let [nums (filter (comp not neg?) xs)]
+    (float (/ (reduce + nums) (count nums)))))
+
+(defn aggregate-top [stats]
+  (into {} 
+        (for [[k v] (apply merge-with vector
+                           (map (comp :runtime-props :member-state) 
+                                (vals stats)))] 
+          [k (non-negative-average (flatten v))])))
+
+(defn with-top [instance-stats aggr-stats]
+  (let [top-stats (aggregate-top instance-stats)]
+    (assoc aggr-stats :top top-stats)))
+
 (defn cluster-stats []
-   (let [i-stats (per-instance-stats (client-instance))]
+   (let [i-stats (per-instance-stats (client-instance))
+         a-stats (aggregate-across-cluster (vals i-stats))]
      {:per-node i-stats
-      :aggregated (aggregate-across-cluster (vals i-stats))}))
+      :aggregated (with-top i-stats a-stats)}))
 
 (defn m-stats [m]
   {:map (.getName m) 

@@ -5,8 +5,15 @@
     {% else %}
       {% style "css/site.min.css" %}
     {% endif %}
+    <!-- Load c3.css -->
+    <link href="css/c3.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Load d3.js and c3.js -->
+    <script src="js/d3.v3.min.js" charset="utf-8"></script>
+    <script src="js/c3.min.js"></script>
   </head>
   <body>
+    <div id="chart"></div>
     <div id="app"></div>
     {% if dev %}
       <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.11.2/react.js"></script>
