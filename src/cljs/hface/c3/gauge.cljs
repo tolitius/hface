@@ -1,10 +1,16 @@
 (ns hface.c3.gauge)
 
-(defn generate [& {:keys [init-value height]
-                   :or   {init-value 0
+(defn to-css-class 
+  "keyword to CSS class. e.g. :chart to '.chart'"
+  [k]
+  (->> k name (str ".")))
+
+(defn generate [elem {:keys [init-value height]
+                      :or   {init-value 0
                           height 180}}]
   (.generate js/c3 (clj->js 
-                     {:data 
+                     {:bindto (to-css-class elem)
+                      :data 
                       {:columns [["data" init-value]]
                        :type "gauge"}
                       :gauge {}

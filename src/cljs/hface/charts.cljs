@@ -2,4 +2,4 @@
   (:require [hface.c3.gauge :as gauge]))
 
 (defn map-view []
-  {:cpu-gauge (gauge/generate :height 120)})
+  {:cpu-gauge (gauge/generate :cpu-usage {:height 120})})

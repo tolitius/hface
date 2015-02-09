@@ -49,5 +49,5 @@
 (defn show-stats [stats]
   [:div
     [:div [:h6 "members: " (for [m (members @stats)] [:span m " "])]]
-    [:div {:id :chart}]
+    [:div.cpu-usage]
     [:div "maps: " (map-stats @stats)]])
