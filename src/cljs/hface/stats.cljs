@@ -14,12 +14,28 @@
                 (reset! stats (t/read t-reader res))))
             "GET"))
 
-(defn re-chart [stats {:keys [cpu-gauge] :as chart}]
+(defn refresh-top [stats {:keys [cpu-gauge] :as chart}]
   (when chart
     (let [cpu-usage (-> @stats :aggregated 
                                :top 
                                :os.process-cpu-load)]
-      (.load cpu-gauge (clj->js {:columns [["data" cpu-usage]]})))))
+      (.load cpu-gauge (clj->js {:columns [["cpu usage" cpu-usage]]})))))
+
+(def s (atom 61))
+
+(defn update-map-area [stats m-name {:keys [map-stats] :as chart}]
+  (when chart
+    (let [m-stats (-> @stats :aggregated 
+                             :map-stats
+                             :appl)]
+                             ;; (.get (keyword m-name)))]
+      
+      (.flow map-stats (clj->js {:columns [;;["x" (.getSeconds (js/Date.))]
+                                           ["x" (swap! s inc)]
+                                           ["puts" (:put-count m-stats)]
+                                           ["hits" (:hits m-stats)]
+                                           ["gets" (:get-count m-stats)]]
+                                 :duration 1000})))))
 
 ;; (defn refresh-stats [stats charts]
 ;;   (reload-stats stats)
@@ -39,10 +55,11 @@
 
 (defn- refresh [stats c-div]
   (refresh-stats stats)
-  (re-chart stats @c-div))
+  (refresh-top stats @c-div)
+  (update-map-area stats "appl" @c-div))
 
 (defn refresh-it [stats]
-  (let [c (atom nil)]
+  (let [c (atom {})]
     (js/setInterval #(refresh stats c) refresh-interval)
     (js/setTimeout #(reset! c (charts-for/map-view)) 100))) ;; wait until react renders c3 needed div
 
@@ -50,4 +67,5 @@
   [:div
     [:div [:h6 "members: " (for [m (members @stats)] [:span m " "])]]
     [:div.cpu-usage]
+    [:div.map-stats]
     [:div "maps: " (map-stats @stats)]])
