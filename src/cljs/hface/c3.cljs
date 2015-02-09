@@ -17,18 +17,19 @@
                       :size {:height height}})))
 
 (defn map-area [elem & {:keys [x-span x-label x-format]
-                        :or   {x-span (range 1 60)
+                        :or   {x-span (range 1 20)
                                x-label "seconds"
                                x-format "%S"}}]
   (let [zeros (replicate (count x-span) 0)]
+    (.log js/console (clj->js (cons "x" x-span)))
     (.generate js/c3 (clj->js 
                        {:bindto (to-css-class elem)
                         :data 
                           {:x "x"
                            :columns [(cons "x" x-span)
-                                     [(cons "puts" zeros)]
-                                     [(cons "hits" zeros)]
-                                     [(cons "gets" zeros)]]
+                                     (cons "puts" zeros)
+                                     (cons "hits" zeros)
+                                     (cons "gets" zeros)]
                            :types {:gets "area-spline"
                                    :puts "area-spline"
                                    :hits "area-spline"}
@@ -38,5 +39,6 @@
                         :axis {:y "ops / s"
                                :x 
                                  {:label x-label
-                                  :type "timeseries"
-                                  :tick {:format x-format}}}}))))
+                                  ;; :type "timeseries"
+                                  ;; :tick {:format x-format}
+                                  }}}))))

@@ -4,7 +4,7 @@
               [cognitect.transit :as t]
               [goog.net.XhrIo :as xhr]))
 
-(defonce refresh-interval 1000)
+(defonce refresh-interval 2000)
 
 (defn refresh-stats [stats]
   (xhr/send "cluster-stats"
@@ -21,7 +21,7 @@
                                :os.process-cpu-load)]
       (.load cpu-gauge (clj->js {:columns [["cpu usage" cpu-usage]]})))))
 
-(def s (atom 61))
+(def s (atom -1))
 
 (defn update-map-area [stats m-name {:keys [map-stats] :as chart}]
   (when chart
@@ -31,11 +31,11 @@
                              ;; (.get (keyword m-name)))]
       
       (.flow map-stats (clj->js {:columns [;;["x" (.getSeconds (js/Date.))]
-                                           ["x" (swap! s inc)]
-                                           ["puts" (:put-count m-stats)]
-                                           ["hits" (:hits m-stats)]
-                                           ["gets" (:get-count m-stats)]]
-                                 :duration 1000})))))
+                                           ["x" (swap! s #(+ % 2))]
+                                           ["puts" (:put-rate m-stats)]
+                                           ["hits" (:hit-rate m-stats)]
+                                           ["gets" (:get-rate m-stats)]]
+                                 :duration 1500})))))
 
 ;; (defn refresh-stats [stats charts]
 ;;   (reload-stats stats)
