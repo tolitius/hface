@@ -53,14 +53,14 @@
 (defn members [s]
   (map name (-> s :per-node keys)))
 
-(defn- refresh [stats c-div]
+(defn- refresh [m-name stats c-div]
   (refresh-stats stats)
   (refresh-top stats @c-div)
-  (update-map-area stats "appl" @c-div))
+  (update-map-area stats m-name @c-div))
 
-(defn refresh-it [stats]
+(defn refresh-it [m-name stats]
   (let [c (atom {})]
-    (js/setInterval #(refresh stats c) refresh-interval)
+    (js/setInterval #(refresh m-name stats c) refresh-interval)
     (js/setTimeout #(reset! c (charts-for/map-view)) 100))) ;; wait until react renders c3 needed div
 
 (defn show-stats [stats]

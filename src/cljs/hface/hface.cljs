@@ -11,7 +11,7 @@
   (let [stats (atom {})]
     [:div [:h3 "hface: look you cluster in the face"]
      [:div [show-stats stats]]
-     [:div (refresh-it stats)]]))
+     [:div (refresh-it "appl" stats)]]))
      ;; [:div [:a {:href "#/about"} "about hface"]]])
 
 (defn about-page []
