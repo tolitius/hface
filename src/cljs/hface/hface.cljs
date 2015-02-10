@@ -4,7 +4,7 @@
               [secretary.core :as secretary :include-macros true]
               [goog.events :as events]
               [goog.history.EventType :as EventType]
-              [hface.stats :refer [map-stats cpu-usage]])
+              [hface.stats :refer [map-stats cpu-usage memory-usage]])
     (:import goog.History))
 
 
@@ -37,7 +37,7 @@
 (defn init! []
   ;; (reagent/render-component [current-page] (.getElementById js/document "app"))
   (reagent/render-component [cpu-usage :cpu-usage] (.getElementById js/document "cluster-cpu"))
-  (reagent/render-component [cpu-usage :mem-usage] (.getElementById js/document "cluster-memory"))
+  (reagent/render-component [memory-usage :mem-usage] (.getElementById js/document "cluster-memory"))
   (reagent/render-component [map-stats :appl] (.getElementById js/document "map-area-chart")))
 
 ;; -------------------------

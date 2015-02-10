@@ -20,10 +20,24 @@
   (when chart
     (let [cpu-usage (-> @stats :aggregated 
                                :top 
-                               :os.process-cpu-load)]
+                               :os-process-cpu-load)]
       (.load chart (clj->js {:columns [["cpu usage" cpu-usage]]})))))
 
-(def s (atom -1))
+(defn mem-used [{:keys [memory-heap-memory-used 
+                        memory-non-heap-memory-used 
+                        os-memory-total-physical-memory]}]
+  (-> (+ memory-heap-memory-used memory-non-heap-memory-used)
+      (* 100) ;; i.e. 100%
+      (/ os-memory-total-physical-memory)))
+
+(defn refresh-mem [stats chart]
+  (when chart
+    (let [mem-usage (-> @stats :aggregated 
+                               :top
+                               mem-used)]
+      (.load chart (clj->js {:columns [["memory usage" mem-usage]]})))))
+
+(def s (atom -1)) ;; TODO: refactor to use real timeseries seconds vs. a dummy global sequence
 
 (defn update-map-area [m-name stats chart]
   (when chart
@@ -43,6 +57,13 @@
   (let [cpu-div (reagent/atom {})]
     (every refresh-interval #(refresh-cpu stats @cpu-div))
     (js/setTimeout #(reset! cpu-div (chart-for/cpu-gauge clazz)) 100)
+    (fn []
+      [:div {:class clazz}])))
+
+(defn memory-usage [clazz]
+  (let [mem-div (reagent/atom {})]
+    (every refresh-interval #(refresh-mem stats @mem-div))
+    (js/setTimeout #(reset! mem-div (chart-for/mem-gauge clazz)) 100)
     (fn []
       [:div {:class clazz}])))
 

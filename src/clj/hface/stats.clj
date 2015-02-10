@@ -3,7 +3,8 @@
             [hface.util :refer [keys-to-keywords do-with-values]]
             [clojure.java.data :as data]
             [clojure.tools.logging :refer [warn]]
-            [cheshire.core :refer [parse-string]])
+            [cheshire.core :refer [parse-string]]
+            [clojure.string :as cstr])
   (:import  [com.hazelcast.management TimedMemberStateFactory]
             [com.hazelcast.core HazelcastInstanceAware]
             [java.util.concurrent Callable]
@@ -73,14 +74,25 @@
       (float (/ (reduce + nums) (count nums)))
       0)))
 
+(defn no-dots [k-word]
+  (-> k-word
+      name
+      (cstr/replace #"\." "-")
+      keyword))
+
 (defn aggregate-top [stats]
-  (if (> (count stats) 1)    ;; more than one node in the cluster
-    (into {} 
-          (for [[k v] (apply merge-with vector
-                             (map (comp :runtime-props :member-state) 
-                                  (vals stats)))] 
-            [k (non-negative-average (flatten v))]))
-    (-> stats vals first :member-state :runtime-props)))
+  (into {} 
+    (if (> (count stats) 1)    ;; more than one node in the cluster
+
+      ;; multiple nodes
+      (for [[k v] (apply merge-with vector
+                         (map (comp :runtime-props :member-state) 
+                              (vals stats)))] 
+        [(no-dots k) (non-negative-average (flatten v))])
+
+      ;; single node
+      (for [[k v] (-> stats vals first :member-state :runtime-props)] 
+        [(no-dots k) v]))))
 
 (defn with-top [instance-stats aggr-stats]
   (let [top-stats (aggregate-top instance-stats)]
