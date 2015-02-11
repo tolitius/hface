@@ -8,6 +8,7 @@
 (defonce refresh-interval 2000)
 ;; (def stats (atom {}))
 (def stats (reagent/atom {}))
+(def active-map (reagent/atom ""))
 
 (defn refresh-stats [stats]
   (xhr/send "cluster-stats"
@@ -40,12 +41,11 @@
 
 (def s (atom -1)) ;; TODO: refactor to use real timeseries seconds vs. a dummy global sequence
 
-(defn update-map-area [m-name stats chart]
+(defn update-map-area [stats chart]
   (when chart
     (let [m-stats (-> @stats :aggregated 
                              :map-stats
-                             m-name)]
-                             ;; (.get (keyword m-name)))]
+                             (.get (keyword @active-map)))]
       
       (.flow chart (clj->js {:columns [;;["x" (.getSeconds (js/Date.))]
                                        ["x" (swap! s #(+ % 2))]
@@ -68,9 +68,9 @@
     (fn []
       [:div {:class clazz}])))
 
-(defn map-stats [m-name]
+(defn map-stats []
   (let [map-stats-div (reagent/atom {})]
-    (every refresh-interval #(update-map-area m-name stats @map-stats-div))
+    (every refresh-interval #(update-map-area stats @map-stats-div))
     (js/setTimeout #(reset! map-stats-div (chart-for/map-area-chart)) 100)
     (fn []
       [:div.map-stats])))
@@ -82,6 +82,18 @@
   [:ul.nav.nav-second-level
    (for [member (members @stats)]
      ^{:key member} [:li [:a {:href "#"} member]])])
+
+(defn hz-maps []
+  [:ul.nav.nav-second-level
+   (for [hmap (-> @stats :aggregated :map-stats keys)]
+     ^{:key hmap} [:li [:a {:href (str "#maps/" (name hmap))} (name hmap)]])])
+
+(defn switch-to-map [m]
+  ;; TODO: clear the map chart
+  (reset! active-map m))
+
+(defn map-chart-name []
+  [:span (str " " @active-map " stats")])
 
 (every refresh-interval #(refresh-stats stats))
 

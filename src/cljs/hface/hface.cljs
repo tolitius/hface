@@ -4,7 +4,7 @@
               [secretary.core :as secretary :include-macros true]
               [goog.events :as events]
               [goog.history.EventType :as EventType]
-              [hface.stats :refer [map-stats cpu-usage memory-usage cluster-members]])
+              [hface.stats :refer [map-stats cpu-usage memory-usage cluster-members hz-maps switch-to-map map-chart-name]])
     (:import goog.History))
 
 
@@ -19,12 +19,18 @@
 (defn current-page []
   [:div [(session/get :current-page)]])
 
+(defn map-chart [m-name]
+  (switch-to-map m-name))
+
 ;; -------------------------
 ;; routes
 (secretary/set-config! :prefix "#")
 
 (secretary/defroute "/" []
   (session/put! :current-page cpu-usage))
+
+(secretary/defroute "/maps/:map-name" [map-name]
+  (session/put! :current-page (map-chart map-name)))
 
 (secretary/defroute "/about" []
   (session/put! :current-page about-page))
@@ -35,8 +41,10 @@
   ;; (reagent/render-component [current-page] (.getElementById js/document "app"))
   (reagent/render-component [cpu-usage :cpu-usage] (.getElementById js/document "cluster-cpu"))
   (reagent/render-component [memory-usage :mem-usage] (.getElementById js/document "cluster-memory"))
-  (reagent/render-component [map-stats :appl] (.getElementById js/document "map-area-chart"))
-  (reagent/render-component [cluster-members] (.getElementById js/document "cluster-members")))
+  (reagent/render-component [map-stats] (.getElementById js/document "map-area-chart"))
+  (reagent/render-component [cluster-members] (.getElementById js/document "cluster-members"))
+  (reagent/render-component [hz-maps] (.getElementById js/document "maps"))
+  (reagent/render-component [map-chart-name] (.getElementById js/document "map-chart-name")))
 
 ;; -------------------------
 ;; history
