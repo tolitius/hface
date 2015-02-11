@@ -5,6 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :source-paths ["src/clj" "src/cljs" "src/clj/hface"]
+  :test-paths ["test/clj" "test/cljs"]
   :java-source-paths ["src/java"]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
