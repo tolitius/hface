@@ -4,14 +4,12 @@
               [secretary.core :as secretary :include-macros true]
               [goog.events :as events]
               [goog.history.EventType :as EventType]
-              [hface.stats :refer [map-stats cpu-usage memory-usage]])
+              [hface.stats :refer [map-stats cpu-usage memory-usage cluster-members]])
     (:import goog.History))
 
 
 (defn home-page []
     [:div [:h3 "hface: look you cluster in the face"]
-     ;; [:div [show-stats stats]j
-     ;; [:div (refresh-it "appl" stats)]]
      [:div [:a {:href "#/about"} "about hface"]]])
 
 (defn about-page []
@@ -20,7 +18,6 @@
 
 (defn current-page []
   [:div [(session/get :current-page)]])
-
 
 ;; -------------------------
 ;; routes
@@ -38,7 +35,8 @@
   ;; (reagent/render-component [current-page] (.getElementById js/document "app"))
   (reagent/render-component [cpu-usage :cpu-usage] (.getElementById js/document "cluster-cpu"))
   (reagent/render-component [memory-usage :mem-usage] (.getElementById js/document "cluster-memory"))
-  (reagent/render-component [map-stats :appl] (.getElementById js/document "map-area-chart")))
+  (reagent/render-component [map-stats :appl] (.getElementById js/document "map-area-chart"))
+  (reagent/render-component [cluster-members] (.getElementById js/document "cluster-members")))
 
 ;; -------------------------
 ;; history

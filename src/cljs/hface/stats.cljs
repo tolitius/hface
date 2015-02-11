@@ -6,7 +6,8 @@
               [goog.net.XhrIo :as xhr]))
 
 (defonce refresh-interval 2000)
-(def stats (atom {}))
+;; (def stats (atom {}))
+(def stats (reagent/atom {}))
 
 (defn refresh-stats [stats]
   (xhr/send "cluster-stats"
@@ -74,6 +75,13 @@
     (fn []
       [:div.map-stats])))
 
+(defn members [s]
+  (map name (-> s :per-node keys)))
+
+(defn cluster-members []
+  [:ul.nav.nav-second-level
+   (for [member (members @stats)]
+     ^{:key member} [:li [:a {:href "#"} member]])])
 
 (every refresh-interval #(refresh-stats stats))
 
@@ -89,9 +97,6 @@
                      ", put-rate: " (:put-rate v) 
                      ", hit-rate: " (:hit-rate v) 
      "}"]))
-
-(defn members [s]
-  (map name (-> s :per-node keys)))
 
 (defn show-stats [stats]
   [:div
