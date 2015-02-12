@@ -83,10 +83,17 @@
    (for [member (members @stats)]
      ^{:key member} [:li [:a {:href "#"} member]])])
 
+(defn map-ops [m stats]
+  (let [m-stats (-> @stats :aggregated :map-stats m)
+        puts (:put-rate m-stats)
+        gets (:get-rate m-stats)]
+    (+ puts gets)))
+
 (defn hz-maps []
   [:ul.nav.nav-second-level
    (for [hmap (-> @stats :aggregated :map-stats keys)]
-     ^{:key hmap} [:li [:a {:href (str "#maps/" (name hmap))} (name hmap)]])])
+     ^{:key hmap} [:li [:a {:href (str "#maps/" (name hmap))}
+                       (name hmap) [:span.f-right (map-ops hmap stats) " " [:i.fa.fa-arrow-left]]]])])
 
 (defn switch-to-map [m]
   ;; TODO: clear the map chart
