@@ -5,6 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :source-paths ["src/clj" "src/cljs" "src/clj/hface"]
+  ;; :keep-non-project-classes true
   :test-paths ["test/clj" "test/cljs"]
   :java-source-paths ["src/java"]
 
