@@ -1,10 +1,12 @@
 (ns hface.c3
   (:require [hface.tools :refer [to-css-class]]))
 
-(defn gauge [elem {:keys [data-is init-value height]
+(defn gauge [elem {:keys [data-is init-value height pattern thresholds]
                    :or   {data-is "usage"
                           init-value 0
-                          height 180}}]
+                          height 180
+                          pattern ["#60B044" "#F6C600" "#F97600" "#FF0000"]
+                          thresholds [30 60 90 100]}}]
   (.generate js/c3 (clj->js 
                      {:bindto (to-css-class elem)
                       :data 
@@ -12,8 +14,8 @@
                        :type "gauge"}
                       :gauge {}
                       :color 
-                      {:pattern ["#60B044" "#F6C600" "#F97600" "#FF0000"]
-                       :threshold {:values [30 60 90 100]}}
+                      {:pattern pattern
+                       :threshold {:values thresholds}}
                       :size {:height height}})))
 
 (defn map-area [elem & {:keys [x-span x-label x-format]

@@ -7,3 +7,6 @@
 
 (defn every [ms f]
   (js/setInterval f ms))
+
+(defn info [& m]
+  (.log js/console m))

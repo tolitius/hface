@@ -4,23 +4,17 @@
               [secretary.core :as secretary :include-macros true]
               [goog.events :as events]
               [goog.history.EventType :as EventType]
-              [hface.stats :refer [map-stats cpu-usage memory-usage cluster-members hz-maps switch-to-map map-chart-name]])
+              [hface.dash.component :refer [map-stats 
+                                            cpu-usage 
+                                            memory-usage 
+                                            cluster-members 
+                                            hz-maps 
+                                            switch-to-map 
+                                            map-chart-name]])
     (:import goog.History))
-
-
-(defn home-page []
-    [:div [:h3 "hface: look you cluster in the face"]
-     [:div [:a {:href "#/about"} "about hface"]]])
-
-(defn about-page []
-  [:div [:h3 "about hface"]
-   [:div [:a {:href "#/"} "hface home"]]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])
-
-(defn map-chart [m-name]
-  (switch-to-map m-name))
 
 ;; -------------------------
 ;; routes
@@ -30,10 +24,7 @@
   (session/put! :current-page cpu-usage))
 
 (secretary/defroute "/maps/:map-name" [map-name]
-  (session/put! :current-page (map-chart map-name)))
-
-(secretary/defroute "/about" []
-  (session/put! :current-page about-page))
+  (session/put! :current-page (switch-to-map map-name)))
 
 ;; -------------------------
 ;; initialize app

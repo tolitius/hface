@@ -4,9 +4,8 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
-  :source-paths ["src/clj" "src/cljs" "src/clj/hface"]
+  :source-paths ["src/clj" "src/cljs"]
   ;; :keep-non-project-classes true
-  :test-paths ["test/clj" "test/cljs"]
   :java-source-paths ["src/java"]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
@@ -60,6 +59,9 @@ ui.routes {:handler hface.ui.routes/app}
 
   :profiles {:dev {:repl-options {:init-ns hface.hz
                                   :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
+
+                   :resource-paths ["test/resources/hz"]
+                   :test-paths ["test/clj" "test/cljs"]
 
                    :dependencies [[ring-mock "0.1.5"]
                                   [ring/ring-devel "1.3.2"]
