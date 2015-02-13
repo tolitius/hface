@@ -25,18 +25,40 @@
                                :os-process-cpu-load)]
       (.load chart (clj->js {:columns [["cpu usage" cpu-usage]]})))))
 
-(defn mem-used [{:keys [memory-heap-memory-used 
-                        memory-non-heap-memory-used 
-                        os-memory-total-physical-memory]}]
+(defn os-mem-used [{:keys [memory-heap-memory-used
+                           memory-non-heap-memory-used
+                           os-memory-total-physical-memory]}]
   (-> (+ memory-heap-memory-used memory-non-heap-memory-used)
       (* 100) ;; i.e. 100%
       (/ os-memory-total-physical-memory)))
 
-(defn refresh-mem [stats chart]
+(defn map-mem-cost [{:keys [owned-entry-memory-cost
+                            backup-entry-memory-cost
+                            heap-cost]}]
+  ;; (.log js/console "owned: " owned-entry-memory-cost ", backups: " backup-entry-memory-cost ", heap: " heap-cost)
+  (+ owned-entry-memory-cost backup-entry-memory-cost))
+
+(defn map-mem-used [maps total-memory]
+  (-> (reduce + (map map-mem-cost maps))
+      (* 100) ;; i.e. 100%
+      (/ total-memory)))
+
+(defn node-total-memory [stats]
+  (-> @stats :aggregated :top :os-memory-total-physical-memory))
+
+(defn refresh-os-mem [stats chart]
   (when chart
     (let [mem-usage (-> @stats :aggregated 
                                :top
-                               mem-used)]
+                               os-mem-used)]
+      (.load chart (clj->js {:columns [["memory usage" mem-usage]]})))))
+
+(defn refresh-mem [stats chart]
+  (when chart
+    (let [mem-usage (-> @stats :aggregated
+                               :map-stats
+                               vals
+                               (map-mem-used (node-total-memory stats)))]
       (.load chart (clj->js {:columns [["memory usage" mem-usage]]})))))
 
 (def s (atom -1)) ;; TODO: refactor to use real timeseries seconds vs. a dummy global sequence
@@ -104,22 +126,3 @@
 
 (every refresh-interval #(refresh-stats stats))
 
-
-
-;; raw play
-
-(defn show-map-stats [s]
-  (for [[k v] (-> s :aggregated :map-stats)] 
-    [:div (str k) "-> { get-count: " (:get-count v) 
-                     ", put-count: " (:put-count v) 
-                     ", get-rate: " (:get-rate v) 
-                     ", put-rate: " (:put-rate v) 
-                     ", hit-rate: " (:hit-rate v) 
-     "}"]))
-
-(defn show-stats [stats]
-  [:div
-    [:div [:h6 "members: " (for [m (members @stats)] [:span m " "])]]
-    ;; [:div.cpu-usage]
-    [:div.map-stats]
-    [:div "maps: " (show-map-stats @stats)]])

@@ -1,5 +1,6 @@
 (ns hface.hz
-  (:require [wall.hack :refer [field]])
+  (:require [wall.hack :refer [field]]
+            [clojure.tools.logging :refer [warn]])
   (:import [com.hazelcast.core Hazelcast]
            [com.hazelcast.client HazelcastClient]
            [com.hazelcast.client.impl HazelcastClientProxy]
@@ -34,9 +35,12 @@
   (let [ci @@c-instance]
     (if (instance-active? ci)
       ci
-      (reset! @c-instance 
-              (HazelcastClient/newHazelcastClient 
-                (ClientConfig.))))))
+      (try
+        (reset! @c-instance
+                (HazelcastClient/newHazelcastClient
+                  (ClientConfig.)))
+        (catch Throwable t
+               (warn "could not create hazelcast a client instance: " (.getMessage t)))))))
 
 ;; creates a demo cluster
 (defn cluster-of [nodes & {:keys [conf]}]

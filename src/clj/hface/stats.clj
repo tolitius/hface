@@ -35,21 +35,28 @@
       Serializable)))
 
 (defn- member-statuses [instance]
-  (-> instance
-      (.getExecutorService "stats-exec-service")
-      ;; (.submitToAllMembers instance-stats-task))]
-      (.submitToAllMembers (InstanceStatsTask.))))
+  (try
+    (-> instance
+        (.getExecutorService "stats-exec-service")
+        ;; (.submitToAllMembers instance-stats-task))]
+        (.submitToAllMembers (InstanceStatsTask.)))
+    (catch Throwable t
+      (warn "could not submit instance task via instance [" instance "]: " (.getMessage t)))))
+
 
 (defn per-instance-stats [instance]
   (into {} 
-    (map (fn [futr]
-           (let [stats (.get futr)]         ;; getting stats for an instance future
-             {(-> stats 
-                  :member-state 
-                  :address 
-                  keyword) 
-              stats}))                      ;; {:192.168.1.9:5703 {...}, ...}
-      (vals (member-statuses instance)))))
+    (map (fn [[host futr]]
+           (try
+             (let [stats (.get futr)]         ;; getting stats for an instance future
+               {(-> stats
+                    :member-state
+                    :address
+                    keyword)
+                stats})                      ;; {:192.168.1.9:5703 {...}, ...}
+           (catch Throwable t
+             (warn "could not read stats from node [" host "]: " (.getMessage t)))))
+      (member-statuses instance))))
 
 (defn merge-stats [kind i-stats]
   (let [ms (map #(-> % :member-state kind) i-stats)
