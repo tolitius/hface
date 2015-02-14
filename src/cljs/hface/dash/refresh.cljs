@@ -43,14 +43,13 @@
 (def s (atom -1)) ;; TODO: refactor to use real timeseries seconds vs. a dummy global sequence
 
 (defn update-map-area [active-map stats chart] 
-  (when (and chart (seq @active-map)) 
-    (let [m-stats (-> @stats :aggregated 
-                             :map-stats
-                             (.get (keyword @active-map)))]
-      
-      (.flow chart (clj->js {:columns [;;["x" (.getSeconds (js/Date.))]
-                                       ["x" (swap! s #(+ % 2))]
-                                       ["puts" (:put-rate m-stats)]
-                                       ["hits" (:hit-rate m-stats)]
-                                       ["gets" (:get-rate m-stats)]]
-                             :duration 1500})))))
+  (when (and chart @active-map @stats)
+    (if-let [ms (-> @stats :aggregated :map-stats)]
+      (let [m-stats (.get ms (keyword @active-map))]
+
+        (.flow chart (clj->js {:columns [;;["x" (.getSeconds (js/Date.))]
+                                         ["x" (swap! s #(+ % 2))]
+                                         ["puts" (:put-rate m-stats)]
+                                         ["hits" (:hit-rate m-stats)]
+                                         ["gets" (:get-rate m-stats)]]
+                               :duration 1500}))))))
