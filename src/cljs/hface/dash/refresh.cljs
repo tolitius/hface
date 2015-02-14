@@ -3,6 +3,7 @@
                                    map-mem-used 
                                    node-total-memory]]
               [cognitect.transit :as t]
+              [hface.tools :refer [info]]
               [goog.net.XhrIo :as xhr]))
 
 (defonce refresh-interval 2000)
@@ -20,7 +21,9 @@
     (let [cpu-usage (-> @stats :aggregated 
                                :top 
                                :os-process-cpu-load)]
-      (.load chart (clj->js {:columns [["cpu usage" cpu-usage]]})))))
+      (if (and (> cpu-usage 0) 
+               (<= cpu-usage 100))
+        (.load chart (clj->js {:columns [["cpu usage" cpu-usage]]}))))))
 
 (defn refresh-os-mem [stats chart]
   (when chart
@@ -39,8 +42,8 @@
 
 (def s (atom -1)) ;; TODO: refactor to use real timeseries seconds vs. a dummy global sequence
 
-(defn update-map-area [stats active-map chart] 
-  (when chart
+(defn update-map-area [active-map stats chart] 
+  (when (and chart (seq @active-map)) 
     (let [m-stats (-> @stats :aggregated 
                              :map-stats
                              (.get (keyword @active-map)))]

@@ -1,5 +1,5 @@
 (ns hface.dash.component
-    (:require [reagent.core :as reagent]
+    (:require [reagent.core :as r]
               [hface.charts :as chart-for]
               [hface.dash.refresh :refer [refresh-interval 
                                           refresh-cpu 
@@ -9,8 +9,8 @@
               [hface.stats :refer [members map-ops]]
               [hface.tools :refer [every]]))
 
-(def stats (reagent/atom {}))
-(def active-map (reagent/atom ""))
+(def stats (r/atom {}))
+(def active-map (r/atom ""))
 
 
 (defn switch-to-map [m]                             ;;TODO: refactor this (state dependent) guy out to.. routes?
@@ -19,29 +19,35 @@
 
 (every refresh-interval #(refresh-stats stats))
 
+(defn f-to-react 
+ "react conponent needs to return [:div] or nil"
+  [f]
+  (fn [] (f) nil))
 
 ;; components
 
-(defn cpu-usage [clazz]
-  (let [cpu-div (reagent/atom {})]
-    (every refresh-interval #(refresh-cpu stats @cpu-div))
-    (js/setTimeout #(reset! cpu-div (chart-for/cpu-gauge clazz)) 100)
+(defn with-refresh [refresh clazz ui-component]
+  (let [div (r/atom nil)
+        refresh-it (with-meta (f-to-react #(refresh stats @div))
+                              {:component-did-mount #(reset! div (ui-component clazz))})]
     (fn []
-      [:div {:class clazz}])))
+      [:div {:class clazz} 
+        [refresh-it]])))
 
-(defn memory-usage [clazz]
-  (let [mem-div (reagent/atom {})]
-    (every refresh-interval #(refresh-mem stats @mem-div))
-    (js/setTimeout #(reset! mem-div (chart-for/mem-gauge clazz)) 100)
-    (fn []
-      [:div {:class clazz}])))
+(defn cpu-usage [] 
+  (with-refresh refresh-cpu 
+                :cpu-usage 
+                chart-for/cpu-gauge))
+
+(defn memory-usage []
+  (with-refresh refresh-mem
+                :mem-usage
+                chart-for/mem-gauge))
 
 (defn map-stats []
-  (let [map-stats-div (reagent/atom {})]
-    (every refresh-interval #(update-map-area stats active-map @map-stats-div))
-    (js/setTimeout #(reset! map-stats-div (chart-for/map-area-chart)) 100)
-    (fn []
-      [:div.map-stats])))
+  (with-refresh (partial update-map-area active-map)
+                :map-stats
+                chart-for/map-area-chart))
 
 (defn cluster-members []
   [:ul.nav.nav-second-level

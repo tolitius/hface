@@ -30,8 +30,8 @@
 ;; initialize app
 (defn init! []
   ;; (reagent/render-component [current-page] (.getElementById js/document "app"))
-  (reagent/render-component [cpu-usage :cpu-usage] (.getElementById js/document "cluster-cpu"))
-  (reagent/render-component [memory-usage :mem-usage] (.getElementById js/document "cluster-memory"))
+  (reagent/render-component [cpu-usage] (.getElementById js/document "cluster-cpu"))
+  (reagent/render-component [memory-usage] (.getElementById js/document "cluster-memory"))
   (reagent/render-component [map-stats] (.getElementById js/document "map-area-chart"))
   (reagent/render-component [cluster-members] (.getElementById js/document "cluster-members"))
   (reagent/render-component [hz-maps] (.getElementById js/document "maps"))

@@ -10,6 +10,6 @@
 (defn mem-gauge [clazz]
   (gauge clazz {:data-is "memory usage" :height 100}))
 
-(defn map-area-chart []
-  (map-area :map-stats))
+(defn map-area-chart [clazz]
+  (map-area clazz))
 

@@ -9,4 +9,4 @@
   (js/setInterval f ms))
 
 (defn info [& m]
-  (.log js/console m))
+  (.log js/console (clj->js m)))
