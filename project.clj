@@ -14,9 +14,10 @@
                  [monr "0.1.5"]
                  [reagent-utils "0.1.0"]
                  [secretary "1.2.1"]
-                 [org.clojure/clojurescript "0.0-2496" :scope "provided"]
-                 [com.cemerick/piggieback "0.1.3"]
-                 [weasel "0.4.2"]
+                 [org.clojure/clojurescript "0.0-2814" :scope "provided"]
+                 [com.andrewmcveigh/cljs-time "0.3.2"]
+                 [com.cemerick/piggieback "0.1.5"]
+                 [weasel "0.6.0-SNAPSHOT"]
                  [ring "1.3.2"]
                  [ring/ring-defaults "0.1.2"]
                  [prone "0.8.0"]
@@ -24,7 +25,7 @@
                  [selmer "0.7.7"]
                  [environ "1.0.0"]
                  [leiningen "2.5.0"]
-                 [figwheel "0.2.1-SNAPSHOT"]
+                 [figwheel "0.2.3-SNAPSHOT"]
                  [com.hazelcast/hazelcast "3.4"]
                  [com.hazelcast/hazelcast-client "3.4"]
                  [com.cognitect/transit-clj "0.8.259"]
@@ -68,7 +69,7 @@ ui.routes {:handler hface.ui.routes/app}
                                   [pjstadig/humane-test-output "0.6.0"]
                                   [org.hface/hface "0.1.0"]]            ;; is needed until figweel bug (https://github.com/bhauman/lein-figwheel/issues/68) is fixed
 
-                   :plugins [[lein-figwheel "0.2.1-SNAPSHOT"]]
+                   :plugins [[lein-figwheel "0.2.3-SNAPSHOT"]]
 
                    :injections [(require 'pjstadig.humane-test-output)
                                 (pjstadig.humane-test-output/activate!)]

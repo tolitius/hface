@@ -1,5 +1,5 @@
 (ns hface.c3
-  (:require [hface.tools :refer [to-css-class]]))
+  (:require [hface.tools :refer [to-css-class seconds-range]]))
 
 (defn gauge [elem {:keys [data-is init-value height pattern thresholds]
                    :or   {data-is "usage"
@@ -19,9 +19,9 @@
                       :size {:height height}})))
 
 (defn map-area [elem & {:keys [x-span x-label x-format]
-                        :or   {x-span (range 1 20)
+                        :or   {x-span (seconds-range 20)
                                x-label "seconds"
-                               x-format "%S"}}]
+                               x-format "%H:%M:%S"}}]
   (let [zeros (replicate (count x-span) 0)]
     (.log js/console (clj->js (cons "x" x-span)))
     (.generate js/c3 (clj->js 
@@ -41,6 +41,6 @@
                         :axis {:y "ops / s"
                                :x 
                                  {:label x-label
-                                  ;; :type "timeseries"
-                                  ;; :tick {:format x-format}
+                                  :type "timeseries"
+                                  :tick {:format x-format}
                                   }}}))))

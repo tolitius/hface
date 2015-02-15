@@ -40,16 +40,13 @@
                                (map-mem-used (node-total-memory stats)))]
       (.load chart (clj->js {:columns [["memory usage" mem-usage]]})))))
 
-(def s (atom -1)) ;; TODO: refactor to use real timeseries seconds vs. a dummy global sequence
-
 (defn update-map-area [active-map stats chart] 
   (when (and chart @active-map @stats)
     (if-let [ms (-> @stats :aggregated :map-stats)]
       (let [m-stats (.get ms (keyword @active-map))]
 
-        (.flow chart (clj->js {:columns [;;["x" (.getSeconds (js/Date.))]
-                                         ["x" (swap! s #(+ % 2))]
+        (.flow chart (clj->js {:columns [["x" (js/Date.)]
                                          ["puts" (:put-rate m-stats)]
                                          ["hits" (:hit-rate m-stats)]
                                          ["gets" (:get-rate m-stats)]]
-                               :duration 1500}))))))
+                               :duration 1600}))))))

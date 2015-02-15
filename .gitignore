@@ -8,6 +8,7 @@ pom.xml.asc
 /.lein-*
 /.nrepl-port
 /resources/public/js
+figwheel_server.log
 /out
 /.repl
 .idea/

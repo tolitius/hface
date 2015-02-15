@@ -1,4 +1,5 @@
-(ns hface.tools)
+(ns hface.tools
+  (:require [cljs-time.core :refer [minus now seconds]]))
 
 (defn to-css-class 
   "keyword to CSS class. e.g. :chart to '.chart'"
@@ -10,3 +11,8 @@
 
 (defn info [& m]
   (.log js/console (clj->js m)))
+
+(defn seconds-range [n]
+  (take n 
+        (iterate #(minus % (seconds 1)) 
+                 (now))))
