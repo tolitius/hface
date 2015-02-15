@@ -12,7 +12,7 @@
                       :data 
                       {:columns [[data-is init-value]]
                        :type "gauge"}
-                      :gauge {}
+                      :gauge {:max 100}
                       :color 
                       {:pattern pattern
                        :threshold {:values thresholds}}

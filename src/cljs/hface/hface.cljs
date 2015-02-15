@@ -1,4 +1,4 @@
-(ns hface
+(ns hface.app
     (:require [reagent.core :as reagent]
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]

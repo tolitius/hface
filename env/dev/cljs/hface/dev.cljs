@@ -1,5 +1,5 @@
 (ns hface.dev
-  (:require [hface]
+  (:require [hface.app :as hface]
             [figwheel.client :as figwheel :include-macros true]
             [weasel.repl :as weasel]
             [reagent.core :as r]))
