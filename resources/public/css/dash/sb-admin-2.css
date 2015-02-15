@@ -356,3 +356,7 @@ table.dataTable thead .sorting:after {
 .f-right {
     float: right;
 }
+
+.well-gauge {
+    background-color: rgba(245, 245, 245, 0.4);
+}
