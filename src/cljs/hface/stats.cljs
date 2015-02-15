@@ -37,3 +37,10 @@
         puts (:put-rate m-stats)
         gets (:get-rate m-stats)]
     (+ puts gets)))
+
+(defn map-highlevel [m stats]
+  (if (and (seq @m) (seq @stats))
+    (let [{:keys [owned-entry-count heap-cost]} 
+          (-> @stats :aggregated :map-stats (.get (keyword @m)))]
+      {:map-name @m :entries owned-entry-count :mem heap-cost})
+      {:map-name "didn't specify" :entries "no entries" :mem "takes no memory"}))

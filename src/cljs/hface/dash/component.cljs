@@ -6,7 +6,7 @@
                                           refresh-mem 
                                           refresh-stats
                                           update-map-area]]
-              [hface.stats :refer [members map-ops]]
+              [hface.stats :refer [members map-ops map-highlevel]]
               [hface.tools :refer [every]]))
 
 (def stats (r/atom {}))
@@ -61,4 +61,7 @@
                        (name hmap) [:span.f-right (map-ops hmap stats) " " [:i.fa.fa-arrow-left]]]])])
 
 (defn map-chart-name []
-  [:span (str " " @active-map " stats")])
+  (let [{:keys [map-name
+                mem 
+                entries]} (map-highlevel active-map stats)]
+    [:span (str " " map-name ": entries [" entries "], memory [" mem "]")]))
