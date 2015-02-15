@@ -16,3 +16,6 @@
   (take n 
         (iterate #(minus % (seconds 1)) 
                  (now))))
+
+(defn byte-size [n]
+  (js/filesize n))

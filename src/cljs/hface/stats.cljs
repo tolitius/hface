@@ -1,4 +1,5 @@
-(ns hface.stats)
+(ns hface.stats
+  (:require [hface.tools :refer [byte-size]]))
 
 ;; memory
 
@@ -42,5 +43,5 @@
   (if (and (seq @m) (seq @stats))
     (let [{:keys [owned-entry-count heap-cost]} 
           (-> @stats :aggregated :map-stats (.get (keyword @m)))]
-      {:map-name @m :entries owned-entry-count :mem heap-cost})
+      {:map-name @m :entries owned-entry-count :mem (byte-size heap-cost)})
       {:map-name "didn't specify" :entries "no entries" :mem "takes no memory"}))

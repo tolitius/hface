@@ -11,6 +11,7 @@
   (let [hm (hz-map (name m))
         f (case op
             :put #(dotimes [_ n] (.put hm (rand-int 100000) 42))
+            ;; :put #(dotimes [_ n] (.put hm (UUID/randomUUID) "snapshot of time.. bytes of the past"))
             :get #(dotimes [_ n] (.get hm (rand-int 100000)))
             #(println "no op: only :get and :put are supported for now"))]
     (run-in-threads 16 f)))
