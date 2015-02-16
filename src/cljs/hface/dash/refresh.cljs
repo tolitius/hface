@@ -40,13 +40,14 @@
                                (map-mem-used (node-total-memory stats)))]
       (.load chart (clj->js {:columns [["memory usage" mem-usage]]})))))
 
-(defn update-map-area [active-map stats chart] 
-  (when (and chart @active-map @stats)
-    (if-let [ms (-> @stats :aggregated :map-stats)]
-      (let [m-stats (.get ms (keyword @active-map))]
+(defn update-map-area [m stats chart] 
+  (let [{:keys [m-name m-type]} @m]
+    (when (and chart (seq m-name) @stats)
+      (let [m-name (keyword m-name)
+            m-stats (-> @stats :aggregated m-type m-name)]
 
-        (.flow chart (clj->js {:columns [["x" (js/Date.)]
-                                         ["puts" (:put-rate m-stats)]
-                                         ["hits" (:hit-rate m-stats)]
-                                         ["gets" (:get-rate m-stats)]]
-                               :duration 1600}))))))
+          (.flow chart (clj->js {:columns [["x" (js/Date.)]
+                                           ["puts" (:put-rate m-stats)]
+                                           ["hits" (:hit-rate m-stats)]
+                                           ["gets" (:get-rate m-stats)]]
+                                 :duration 1600}))))))

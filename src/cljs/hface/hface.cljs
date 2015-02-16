@@ -9,6 +9,7 @@
                                             memory-usage 
                                             cluster-members 
                                             hz-maps 
+                                            hz-mmaps 
                                             switch-to-map 
                                             map-chart-name]])
     (:import goog.History))
@@ -24,7 +25,10 @@
   (session/put! :current-page cpu-usage))
 
 (secretary/defroute "/maps/:map-name" [map-name]
-  (session/put! :current-page (switch-to-map map-name)))
+  (session/put! :current-page (switch-to-map map-name :map-stats)))
+
+(secretary/defroute "/mmaps/:map-name" [map-name]
+  (session/put! :current-page (switch-to-map map-name :multi-map-stats)))
 
 ;; -------------------------
 ;; initialize app
@@ -35,6 +39,7 @@
   (reagent/render-component [map-stats] (.getElementById js/document "map-area-chart"))
   (reagent/render-component [cluster-members] (.getElementById js/document "cluster-members"))
   (reagent/render-component [hz-maps] (.getElementById js/document "maps"))
+  (reagent/render-component [hz-mmaps] (.getElementById js/document "multi-maps"))
   (reagent/render-component [map-chart-name] (.getElementById js/document "map-chart-name")))
 
 ;; -------------------------

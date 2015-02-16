@@ -10,12 +10,12 @@
               [hface.tools :refer [every]]))
 
 (def stats (r/atom {}))
-(def active-map (r/atom ""))
+(def active-map (r/atom {}))
 
 
-(defn switch-to-map [m]                             ;;TODO: refactor this (state dependent) guy out to.. routes?
+(defn switch-to-map [m t]                             ;;TODO: refactor this (state dependent) guy out to.. routes?
   ;; TODO: clear the map chart
-  (reset! active-map m))
+  (reset! active-map {:m-name m :m-type t}))
 
 (every refresh-interval #(refresh-stats stats))
 
@@ -58,10 +58,16 @@
   [:ul.nav.nav-second-level
    (for [hmap (-> @stats :aggregated :map-stats keys)]
      ^{:key hmap} [:li [:a {:href (str "#maps/" (name hmap))}
-                       (name hmap) [:span.f-right (map-ops hmap stats) " " [:i.fa.fa-arrow-left]]]])])
+                       (name hmap) [:span.f-right (map-ops hmap stats :map-stats) " " [:i.fa.fa-arrow-left]]]])])
+
+(defn hz-mmaps []
+  [:ul.nav.nav-second-level
+   (for [hmap (-> @stats :aggregated :multi-map-stats keys)]
+     ^{:key hmap} [:li [:a {:href (str "#mmaps/" (name hmap))}
+                       (name hmap) [:span.f-right (map-ops hmap stats :multi-map-stats) " " [:i.fa.fa-arrow-left]]]])])
 
 (defn map-chart-name []
   (let [{:keys [map-name
                 mem 
-                entries]} (map-highlevel active-map stats)]
+                entries]} (map-highlevel @active-map stats)]
     [:span (str " " map-name ": entries [" entries "], memory [" mem "]")]))

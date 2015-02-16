@@ -61,6 +61,7 @@ ui.routes {:handler hface.ui.routes/app}
   :profiles {:dev {:repl-options {:init-ns hface.hz
                                   :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
 
+                   :jvm-opts ["-Xmx4g"]
                    :resource-paths ["test/resources/hz"]
                    :test-paths ["test/clj" "test/cljs"]
 

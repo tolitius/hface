@@ -76,6 +76,12 @@
   ([name instance]
     (.getMap instance name)))
 
+(defn hz-mmap 
+  ([name]
+    (hz-mmap name (hz-instance)))
+  ([name instance]
+    (.getMultiMap instance name)))
+
 (defn proxy-to-instance [p]
   (condp instance? p
     HazelcastInstanceProxy (field HazelcastInstanceProxy :original p)
