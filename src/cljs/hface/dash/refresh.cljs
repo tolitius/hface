@@ -6,7 +6,7 @@
               [hface.tools :refer [info]]
               [goog.net.XhrIo :as xhr]))
 
-(defonce refresh-interval 2000)
+(defonce refresh-interval 5000)
 
 (defn refresh-stats [stats]
   (xhr/send "cluster-stats"
@@ -50,4 +50,4 @@
                                            ["puts" (:put-rate m-stats)]
                                            ["hits" (:hit-rate m-stats)]
                                            ["gets" (:get-rate m-stats)]]
-                                 :duration 1600}))))))
+                                 :duration 4600}))))))

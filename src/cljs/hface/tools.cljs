@@ -1,5 +1,5 @@
 (ns hface.tools
-  (:require [cljs-time.core :refer [minus now seconds]]))
+  (:require [cljs-time.core :refer [minus plus now seconds]]))
 
 (defn to-css-class 
   "keyword to CSS class. e.g. :chart to '.chart'"
@@ -15,7 +15,7 @@
 (defn seconds-range [n]
   (take n 
         (iterate #(minus % (seconds 1)) 
-                 (now))))
+                 (plus (now) (seconds 1)))))  ;; starting from 1 second into the future
 
 (defn byte-size [n]
   (js/filesize n))

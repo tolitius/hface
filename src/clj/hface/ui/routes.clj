@@ -2,7 +2,6 @@
   (:require [hface.refresh :refer [collect-stats stats]]
             [hface.util :refer [to-transit]]
             [hface.hz :refer [cluster-of]]
-            [hface.ui.dev :refer [browser-repl start-figwheel]]
             [clojure.tools.logging :refer [info]]
             [compojure.core :refer [GET] :as c]
             [compojure.route :refer [not-found resources]]
@@ -13,10 +12,10 @@
 
 (defn collect-on-start! [collecting?]
   (when-not @collecting?
-    (let [interval (or (env :refresh-interval) 1)]
+    (let [interval (or (env :refresh-interval) 4)]
       (info "[hface]: scheduling cluster stats collector to run every " interval " seconds")
-      (if (env :dev?) 
-        (doall (cluster-of 1)))                                      ;; in dev mode start a one node cluster
+      ;; (if (env :dev?) 
+      ;;   (doall (cluster-of 1)))                                      ;; in dev mode start a one node cluster
       (collect-stats interval)
       (reset! collecting? true))))
 

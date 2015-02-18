@@ -5,27 +5,22 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :source-paths ["src/clj" "src/cljs"]
-  ;; :keep-non-project-classes true
+  :keep-non-project-classes true
   :java-source-paths ["src/java"]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [com.facebook/react "0.11.2"]
                  [reagent "0.4.3"]
-                 [monr "0.1.5"]
                  [reagent-utils "0.1.0"]
                  [secretary "1.2.1"]
-                 [org.clojure/clojurescript "0.0-2814" :scope "provided"]
+                 [org.clojure/clojurescript "0.0-2850" :scope "provided"]
                  [com.andrewmcveigh/cljs-time "0.3.2"]
-                 [com.cemerick/piggieback "0.1.5"]
-                 [weasel "0.6.0-SNAPSHOT"]
                  [ring "1.3.2"]
                  [ring/ring-defaults "0.1.2"]
-                 [prone "0.8.0"]
                  [compojure "1.3.1"]
+                 [prone "0.8.0"]
                  [selmer "0.7.7"]
                  [environ "1.0.0"]
-                 [leiningen "2.5.0"]
-                 [figwheel "0.2.3-SNAPSHOT"]
                  [com.hazelcast/hazelcast "3.4"]
                  [com.hazelcast/hazelcast-client "3.4"]
                  [com.cognitect/transit-clj "0.8.259"]
@@ -64,10 +59,16 @@ ui.routes {:handler hface.ui.routes/app}
                    :jvm-opts ["-Xmx4g"]
                    :resource-paths ["test/resources/hz"]
                    :test-paths ["test/clj" "test/cljs"]
+                   :source-paths ["env/dev/clj"]
 
                    :dependencies [[ring-mock "0.1.5"]
                                   [ring/ring-devel "1.3.2"]
                                   [pjstadig/humane-test-output "0.6.0"]
+                                  [monr "0.1.5"]
+                                  [com.cemerick/piggieback "0.1.5"]
+                                  [weasel "0.6.0-SNAPSHOT"]
+                                  [leiningen "2.5.0"]
+                                  [figwheel "0.2.5-SNAPSHOT"]
                                   [org.hface/hface "0.1.0"]]            ;; is needed until figweel bug (https://github.com/bhauman/lein-figwheel/issues/68) is fixed
 
                    :plugins [[lein-figwheel "0.2.3-SNAPSHOT"]]
