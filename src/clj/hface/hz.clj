@@ -1,5 +1,6 @@
 (ns hface.hz
   (:require [wall.hack :refer [field]]
+            [hface.config :refer [conf]]
             [clojure.tools.logging :refer [warn]])
   (:import [com.hazelcast.core Hazelcast]
            [com.hazelcast.client HazelcastClient]
@@ -22,9 +23,15 @@
   ([conf]
     (Hazelcast/getOrCreateHazelcastInstance conf)))
 
+(def client-config
+  (let [config (ClientConfig.)]
+    (doto config 
+      (.getNetworkConfig)
+      (.addAddress (into-array (conf :hz-client :addresses))))
+    config))
+
 (def c-instance
-  (delay (atom (HazelcastClient/newHazelcastClient 
-                 (ClientConfig.)))))
+  (delay (atom (HazelcastClient/newHazelcastClient client-config))))
 
 (defn instance-active? [instance]
   (-> instance
@@ -37,8 +44,7 @@
       ci
       (try
         (reset! @c-instance
-                (HazelcastClient/newHazelcastClient
-                  (ClientConfig.)))
+                (HazelcastClient/newHazelcastClient client-config))
         (catch Throwable t
                (warn "could not create hazelcast a client instance: " (.getMessage t)))))))
 
