@@ -7,6 +7,7 @@
             [compojure.route :refer [not-found resources]]
             [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
             [selmer.parser :refer [render-file]]
+            [cheshire.core :refer [generate-string]]
             [environ.core :refer [env]]
             [prone.middleware :refer [wrap-exceptions]]))
 
@@ -14,8 +15,8 @@
   (when-not @collecting?
     (let [interval (or (env :refresh-interval) 4)]
       (info "[hface]: scheduling cluster stats collector to run every " interval " seconds")
-      ;; (if (env :dev?) 
-      ;;   (doall (cluster-of 1)))                                      ;; in dev mode start a one node cluster
+      (if (env :dev?) 
+        (doall (cluster-of 1)))                                      ;; in dev mode start a one node cluster
       (collect-stats interval)
       (reset! collecting? true))))
 
@@ -27,7 +28,7 @@
            (render-file "templates/index.html" {:dev (env :dev?)}))
 
       (GET "/cluster-stats" [] (to-transit @stats))
-      (GET "/stats" [] @stats)
+      (GET "/stats" [] (generate-string @stats))
       (resources "/")
       (not-found "Not Found"))))
 
