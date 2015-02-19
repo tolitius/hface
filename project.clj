@@ -5,7 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :source-paths ["src/clj" "src/cljs"]
-  :keep-non-project-classes true
+  ;; :keep-non-project-classes true
   :java-source-paths ["src/java"]
 
   :jvm-opts ["-Dhface.conf=./resources/conf/hface.conf"]
@@ -41,7 +41,10 @@
 ui.routes {:handler hface.ui.routes/app}
 
   :min-lein-version "2.5.0"
+  :jar-exclusions [#".clj*|(public)|(sample)|(dash)|(conf)|(templates)|(ui)"]
 
+  :jar-name "hface-client.jar"
+            
   :uberjar-name "hface.jar"
 
   :minify-assets
@@ -71,7 +74,7 @@ ui.routes {:handler hface.ui.routes/app}
                                   [weasel "0.6.0-SNAPSHOT"]
                                   [leiningen "2.5.0"]
                                   [figwheel "0.2.5-SNAPSHOT"]
-                                  [org.hface/hface "0.1.0"]]            ;; is needed until figweel bug (https://github.com/bhauman/lein-figwheel/issues/68) is fixed
+                                  [for.figwheel/hface-client "0.1.0"]]            ;; is needed until figweel bug (https://github.com/bhauman/lein-figwheel/issues/68) is fixed
 
                    :plugins [[lein-figwheel "0.2.3-SNAPSHOT"]]
 

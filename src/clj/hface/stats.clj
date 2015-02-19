@@ -17,9 +17,7 @@
     (TimedMemberStateFactory.)
     (.createTimedMemberState)
     (.toJson)
-    str
-    parse-string
-    keys-to-keywords))
+    str))
 
 ;; TODO: atom and hz instance are not serializable.. work in progress
 ;; need this due to a figwheel bug: https://github.com/bhauman/lein-figwheel/issues/68#issuecomment-70163386
@@ -48,7 +46,9 @@
   (into {} 
     (map (fn [[host futr]]
            (try
-             (let [stats (.get futr)]         ;; getting stats for an instance future
+             (let [stats (-> (.get futr)
+                           parse-string
+                           keys-to-keywords)]         ;; getting stats for an instance future
                {(-> stats
                     :member-state
                     :address
