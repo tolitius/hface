@@ -27,7 +27,9 @@
   (let [config (ClientConfig.)]
     (doto config 
       (.getNetworkConfig)
-      (.addAddress (into-array (conf :hz-client :addresses))))
+      (.addAddress (into-array (conf :hz-client :addresses)))
+      (.setConnectionAttemptPeriod (conf :hz-client :time-between-connection-retries-ms))
+      (.setConnectionAttemptLimit (conf :hz-client :retry-max)))
     config))
 
 (def c-instance
