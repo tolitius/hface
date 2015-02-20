@@ -1,21 +1,22 @@
 (ns hface.refresh
-  (:require [hface.util :refer [every]]
+  (:require [clojure.tools.logging :refer [info]]
+            [hface.util :refer [every]]
             [hface.stats :refer [cluster-stats]]))
 
 (def stats (atom {}))
 
-(defn rate-it 
-  ([previous current interval]
-    (float (/ (- current previous) interval)))
-  ([previous current k interval]
-    (float (/ (- (k current) (k previous)) interval))))
+(defn rate-it [previous current k rate-key interval]
+    (let [rate (float (/ (- (k current) (k previous)) interval))]
+      (if-not (neg? rate)        ;; can be negative if one of the nodes parted
+        rate
+        (rate-key previous))))   ;; in which case return a previous rate
 
-;; calculating rates for maps (e.g. hazelcast IMap)
+;; calculating rates for maps (e.g. hazelcast IMap/MultiMap)
 
 (defn rate-map [pm cm interval]
-  (assoc cm :get-rate (rate-it pm cm :get-count interval)
-            :put-rate (rate-it pm cm :put-count interval)
-            :hit-rate (rate-it pm cm :hits interval)))
+  (assoc cm :get-rate (rate-it pm cm :get-count :get-rate interval)
+            :put-rate (rate-it pm cm :put-count :put-rate interval)
+            :hit-rate (rate-it pm cm :hits :hit-rate interval)))
 
 (defn compare-and-rate-maps [previous current interval]
   (into {}

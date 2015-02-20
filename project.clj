@@ -41,7 +41,7 @@
 ui.routes {:handler hface.ui.routes/app}
 
   :min-lein-version "2.5.0"
-  :jar-exclusions [#".clj*|(public)|(sample)|(dash)|(conf)|(templates)|(ui)"]
+  :jar-exclusions [#"(clj)|(public)|(sample)|(dash)|(conf)|(templates)|(ui)"]
 
   :jar-name "hface-client.jar"
             
@@ -74,7 +74,7 @@ ui.routes {:handler hface.ui.routes/app}
                                   [weasel "0.6.0-SNAPSHOT"]
                                   [leiningen "2.5.0"]
                                   [figwheel "0.2.5-SNAPSHOT"]
-                                  [for.figwheel/hface-client "0.1.0"]]            ;; is needed until figweel bug (https://github.com/bhauman/lein-figwheel/issues/68) is fixed
+                                  [org.hface/hface-client "0.1.0"]]            ;; is needed until figweel bug (https://github.com/bhauman/lein-figwheel/issues/68) is fixed
 
                    :plugins [[lein-figwheel "0.2.3-SNAPSHOT"]]
 
@@ -89,7 +89,7 @@ ui.routes {:handler hface.ui.routes/app}
                    :ring {:handler hface.ui.routes/app}
 
                    :env {:dev? true
-                         :refresh-interval 1}
+                         :refresh-interval 4}
 
                    :cljsbuild {:builds {:app {:source-paths ["env/dev/cljs"]
                                               :compiler {:source-map true}}}}}

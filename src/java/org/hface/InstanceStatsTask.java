@@ -1,6 +1,5 @@
 package org.hface;
 
-import com.hazelcast.client.impl.HazelcastClientProxy;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.HazelcastInstanceAware;
 import com.hazelcast.instance.HazelcastInstanceImpl;
@@ -21,7 +20,7 @@ public class InstanceStatsTask implements Callable<String>, Serializable, Hazelc
     private static final long serialVersionUID = 42L;
 
     private static final String COULD_NOT_CREATE_HZ_INSTANCE = "{:error \"could not create Hazelcast instance\"}";
-    private static final String COULD_NOT_COLLECT_STATS = "{:error \"could not collect stats from instance: \"}";
+    private static final String COULD_NOT_COLLECT_STATS = "{:error \"could not collect stats from instance\"}";
 
     private transient HazelcastInstance hazelcastInstance;
 
@@ -48,18 +47,16 @@ public class InstanceStatsTask implements Callable<String>, Serializable, Hazelc
         if ( proxy instanceof HazelcastInstanceProxy )
             return field(proxy, "original");
 
-        if ( proxy instanceof HazelcastClientProxy )
-            return field( proxy, "client" );
-
         // do the best effort.. to cast :)
         return ( ( HazelcastInstanceImpl ) proxy );
     }
 
     public String call() throws Exception {
 
-        HazelcastInstanceImpl instance = proxyToInstance( this.hazelcastInstance );
-
         try {
+            HazelcastInstanceImpl instance = proxyToInstance( this.hazelcastInstance );
+
+            logger.info( "collecting stats for instance: [" + instance + "]" );
 
             if ( instance != null ) {
 
@@ -72,7 +69,8 @@ public class InstanceStatsTask implements Callable<String>, Serializable, Hazelc
             }
         }
         catch ( Throwable t ) {
-            return COULD_NOT_COLLECT_STATS + instance;
+            logger.warning( COULD_NOT_COLLECT_STATS, t );
+            return COULD_NOT_COLLECT_STATS;
         }
     }
 }

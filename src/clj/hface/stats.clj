@@ -53,7 +53,7 @@
                     :member-state
                     :address
                     keyword)
-                stats})                      ;; {:192.168.1.9:5703 {...}, ...}
+                stats})                               ;; {:192.168.1.9:5703 {...}, ...}
            (catch Throwable t
              (warn "could not read stats from node [" host "]: " (.getMessage t)))))
       (member-statuses instance))))

@@ -37,7 +37,7 @@
   (let [m-stats (-> @stats :aggregated mtype m)
         puts (:put-rate m-stats)
         gets (:get-rate m-stats)]
-    (+ puts gets)))
+    (int (+ puts gets))))
 
 (defn map-highlevel [{:keys [m-name m-type]} stats]
   (if (and (seq m-name) m-type (seq @stats))
