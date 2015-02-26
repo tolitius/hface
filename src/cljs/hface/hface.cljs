@@ -10,7 +10,9 @@
                                             cluster-members 
                                             hz-maps 
                                             hz-mmaps 
+                                            hz-queues 
                                             switch-to-map 
+                                            switch-to-q
                                             map-chart-name]])
     (:import goog.History))
 
@@ -30,6 +32,9 @@
 (secretary/defroute "/mmaps/:map-name" [map-name]
   (session/put! :current-page (switch-to-map map-name :multi-map-stats)))
 
+(secretary/defroute "/queues/:q-name" [q-name]
+  (session/put! :current-page (switch-to-q q-name :queue-stats)))
+
 ;; -------------------------
 ;; initialize app
 (defn init! []
@@ -40,6 +45,7 @@
   (reagent/render-component [cluster-members] (.getElementById js/document "cluster-members"))
   (reagent/render-component [hz-maps] (.getElementById js/document "maps"))
   (reagent/render-component [hz-mmaps] (.getElementById js/document "multi-maps"))
+  (reagent/render-component [hz-queues] (.getElementById js/document "queues"))
   (reagent/render-component [map-chart-name] (.getElementById js/document "map-chart-name")))
 
 ;; -------------------------

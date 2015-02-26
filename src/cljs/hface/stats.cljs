@@ -38,6 +38,12 @@
         gets (:get-rate m-stats)]
     (int (+ puts gets))))
 
+(defn q-ops [q stats qtype]
+  (let [q-stats (-> @stats :aggregated qtype q)
+        polls (:number-of-polls q-stats)         ;; TODO: do q rates vs. absilutes
+        offers (:number-of-offers q-stats)]
+    (int (+ polls offers))))
+
 (defn map-highlevel [{:keys [m-name m-type]} stats]
   (if (and (seq m-name) m-type (seq @stats))
     (let [m-name (keyword m-name)

@@ -7,16 +7,21 @@
                                           refresh-os-mem 
                                           refresh-stats
                                           update-map-area]]
-              [hface.stats :refer [members map-ops map-highlevel]]
+              [hface.stats :refer [members map-ops q-ops map-highlevel]]
               [hface.tools :refer [every]]))
 
 (def stats (r/atom {}))
 (def active-map (r/atom {}))
+(def active-q (r/atom {}))
 
 
 (defn switch-to-map [m t]                             ;;TODO: refactor this (state dependent) guy out to.. routes?
   ;; TODO: clear the map chart
   (reset! active-map {:m-name m :m-type t}))
+
+(defn switch-to-map [q t]                             ;;TODO: refactor this (state dependent) guy out to.. routes?
+  ;; TODO: clear the chart
+  (reset! active-map {:q-name q :q-type q}))
 
 (every refresh-interval #(refresh-stats stats))
 
@@ -66,6 +71,12 @@
    (for [hmap (-> @stats :aggregated :multi-map-stats keys)]
      ^{:key hmap} [:li [:a {:href (str "#mmaps/" (name hmap))}
                        (name hmap) [:span.f-right (map-ops hmap stats :multi-map-stats) " " [:i.fa.fa-arrow-left]]]])])
+
+(defn hz-queues []
+  [:ul.nav.nav-second-level
+   (for [q (-> @stats :aggregated :queue-stats keys)]
+     ^{:key q} [:li [:a {:href (str "#queues/" (name q))}
+                       (name q) [:span.f-right (queue-ops q stats :queue-stats) " " [:i.fa.fa-arrow-left]]]])])
 
 (defn map-chart-name []
   (let [{:keys [map-name
