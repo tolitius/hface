@@ -6,9 +6,8 @@
 (defn os-mem-used [{:keys [memory-heap-memory-used
                            memory-non-heap-memory-used
                            os-memory-total-physical-memory]}]
-  (-> (+ memory-heap-memory-used memory-non-heap-memory-used)
-      (* 100) ;; i.e. 100%
-      (/ os-memory-total-physical-memory)))
+  {:mem-used (+ memory-heap-memory-used memory-non-heap-memory-used)
+   :mem-total os-memory-total-physical-memory})
 
 (defn map-mem-cost [{:keys [owned-entry-memory-cost
                             backup-entry-memory-cost

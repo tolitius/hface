@@ -2,6 +2,7 @@
     (:require [hface.stats :refer [os-mem-used 
                                    map-mem-used 
                                    node-total-memory]]
+              [hface.charts :refer [thresholds]]
               [cognitect.transit :as t]
               [hface.tools :refer [info]]
               [goog.net.XhrIo :as xhr]))
@@ -27,10 +28,12 @@
 
 (defn refresh-os-mem [stats chart]
   (when chart
-    (let [mem-usage (-> @stats :aggregated 
-                               :top
-                               os-mem-used)]
-      (.load chart (clj->js {:columns [["memory usage" mem-usage]]})))))
+    (let [{:keys [mem-used mem-total]} (-> @stats :aggregated 
+                                                  :top
+                                                  os-mem-used)]
+      (set! (.-internal.config.gauge_max chart) mem-total)
+      ;; (set! (.-internal.config.color_threshold_values chart) (clj->js (thresholds mem-total 4)))
+      (.load chart (clj->js {:columns [["memory usage" mem-used]]})))))
 
 (defn refresh-mem [stats chart]
   (when chart

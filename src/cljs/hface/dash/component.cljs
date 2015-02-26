@@ -4,6 +4,7 @@
               [hface.dash.refresh :refer [refresh-interval 
                                           refresh-cpu 
                                           refresh-mem 
+                                          refresh-os-mem 
                                           refresh-stats
                                           update-map-area]]
               [hface.stats :refer [members map-ops map-highlevel]]
@@ -40,7 +41,7 @@
                 chart-for/cpu-gauge))
 
 (defn memory-usage []
-  (with-refresh refresh-mem
+  (with-refresh refresh-os-mem
                 :mem-usage
                 chart-for/mem-gauge))
 

@@ -8,8 +8,17 @@
   (gauge clazz {:data-is "cpu usage" :height 80}))
 
 (defn mem-gauge [clazz]
-  (gauge clazz {:data-is "memory usage" :height 80}))
+  (gauge clazz {:data-is "memory usage" 
+                :height 80
+                :pattern ["rgba(31, 146, 180, 0.8)"]
+                :thresholds []
+                :label {:format (fn [v r] 
+                                  (js/filesize v))
+                        :show false}}))
 
 (defn map-area-chart [clazz]
   (map-area clazz))
 
+(defn thresholds [t-max n] 
+  (map #(* (float (/ t-max n)) %) 
+       (range 1 (inc n))))
