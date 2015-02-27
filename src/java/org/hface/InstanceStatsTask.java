@@ -56,7 +56,7 @@ public class InstanceStatsTask implements Callable<String>, Serializable, Hazelc
         try {
             HazelcastInstanceImpl instance = proxyToInstance( this.hazelcastInstance );
 
-            logger.info( "collecting stats for instance: [" + instance + "]" );
+//            logger.finest( "collecting stats for instance: [" + instance + "]" );
 
             if ( instance != null ) {
 
