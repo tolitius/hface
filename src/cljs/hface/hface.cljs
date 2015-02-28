@@ -13,7 +13,8 @@
                                             hz-queues 
                                             switch-to-map 
                                             switch-to-q
-                                            map-chart-name]])
+                                            map-chart-name
+                                            q-chart-name]])
     (:import goog.History))
 
 (defn current-page []
@@ -46,7 +47,8 @@
   (reagent/render-component [hz-maps] (.getElementById js/document "maps"))
   (reagent/render-component [hz-mmaps] (.getElementById js/document "multi-maps"))
   (reagent/render-component [hz-queues] (.getElementById js/document "queues"))
-  (reagent/render-component [map-chart-name] (.getElementById js/document "map-chart-name")))
+  (reagent/render-component [map-chart-name] (.getElementById js/document "chart-name"))
+  (reagent/render-component [q-chart-name] (.getElementById js/document "chart-name")))
 
 ;; -------------------------
 ;; history

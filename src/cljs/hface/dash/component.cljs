@@ -7,7 +7,11 @@
                                           refresh-os-mem 
                                           refresh-stats
                                           update-map-area]]
-              [hface.stats :refer [members map-ops q-ops map-highlevel]]
+              [hface.stats :refer [members 
+                                   map-ops 
+                                   map-highlevel
+                                   q-ops
+                                   q-highlevel]]
               [hface.tools :refer [every]]))
 
 (def stats (r/atom {}))
@@ -15,13 +19,13 @@
 (def active-q (r/atom {}))
 
 
-(defn switch-to-map [m t]                             ;;TODO: refactor this (state dependent) guy out to.. routes?
+(defn switch-to-map [m t]                           ;;TODO: refactor this (state dependent) guy out to.. routes?
   ;; TODO: clear the map chart
   (reset! active-map {:m-name m :m-type t}))
 
-(defn switch-to-map [q t]                             ;;TODO: refactor this (state dependent) guy out to.. routes?
+(defn switch-to-q [q t]                             ;;TODO: refactor this (state dependent) guy out to.. routes?
   ;; TODO: clear the chart
-  (reset! active-map {:q-name q :q-type q}))
+  (reset! active-q {:q-name q :q-type t}))
 
 (every refresh-interval #(refresh-stats stats))
 
@@ -76,10 +80,16 @@
   [:ul.nav.nav-second-level
    (for [q (-> @stats :aggregated :queue-stats keys)]
      ^{:key q} [:li [:a {:href (str "#queues/" (name q))}
-                       (name q) [:span.f-right (queue-ops q stats :queue-stats) " " [:i.fa.fa-arrow-left]]]])])
+                       (name q) [:span.f-right (q-ops q stats :queue-stats) " " [:i.fa.fa-arrow-left]]]])])
 
 (defn map-chart-name []
   (let [{:keys [map-name
                 mem 
                 entries]} (map-highlevel @active-map stats)]
     [:span (str " " map-name ": entries [" entries "], memory [" mem "]")]))
+
+(defn q-chart-name []
+  (let [{:keys [q-name
+                mem 
+                entries]} (q-highlevel @active-q stats)]
+    [:span (str " " q-name ": entries [" entries "], memory [" mem "]")]))
