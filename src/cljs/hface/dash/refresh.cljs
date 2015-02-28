@@ -54,3 +54,16 @@
                                            ["hits" (:hit-rate m-stats)]
                                            ["gets" (:get-rate m-stats)]]
                                  :duration 4600}))))))
+
+(defn update-q-area [q stats chart] 
+  (let [{:keys [q-name q-type]} @q]
+    (when (and chart (seq q-name) @stats)
+      (let [q-name (keyword q-name)
+            q-stats (-> @stats :aggregated q-type q-name)]
+
+          (.flow chart (clj->js {:columns [["x" (js/Date.)]
+                                           ["puts" (:put-rate q-stats)]
+                                           ["rejected-puts" (:rejected-put-rate q-stats)]
+                                           ["takes" (:take-rate q-stats)]
+                                           ["empty-takes" (:empty-take-rate q-stats)]]
+                                 :duration 4600}))))))

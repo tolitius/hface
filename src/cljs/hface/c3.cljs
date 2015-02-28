@@ -27,7 +27,7 @@
                                x-label "seconds"
                                x-format "%H:%M:%S"}}]
   (let [zeros (replicate (count x-span) 0)]
-    (.log js/console (clj->js (cons "x" x-span)))
+    ;; (.log js/console (clj->js (cons "x" x-span)))
     (.generate js/c3 (clj->js 
                        {:bindto (to-css-class elem)
                         :data 
@@ -42,6 +42,36 @@
                            :names {:gets "gets/s"
                                    :puts "puts/s"
                                    :hits "total hits/s"}}
+                        :axis {:y "ops / s"
+                               :x 
+                                 {:label x-label
+                                  :type "timeseries"
+                                  :tick {:format x-format}
+                                  }}}))))
+
+(defn q-area [elem & {:keys [x-span x-label x-format]    ;; only _maybe_ combine with map-area
+                      :or   {x-span (seconds-range 20)
+                             x-label "seconds"
+                             x-format "%H:%M:%S"}}]
+  (let [zeros (replicate (count x-span) 0)]
+    ;; (.log js/console (clj->js (cons "x" x-span)))
+    (.generate js/c3 (clj->js 
+                       {:bindto (to-css-class elem)
+                        :data 
+                          {:x "x"
+                           :columns [(cons "x" x-span)
+                                     (cons "puts" zeros)
+                                     (cons "rejected-puts" zeros)
+                                     (cons "takes" zeros)
+                                     (cons "empty-takes" zeros)]
+                           :types {:puts "area-spline"
+                                   :rejected-puts "area-spline"
+                                   :takes "area-spline"
+                                   :empty-takes "area-spline"}
+                           :names {:puts "puts/s"
+                                   :rejected-puts "rejected puts/s"
+                                   :takes "takes/s"
+                                   :empty-takes "empty takes/s"}}
                         :axis {:y "ops / s"
                                :x 
                                  {:label x-label

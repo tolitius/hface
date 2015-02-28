@@ -1,5 +1,5 @@
 (ns hface.charts
-  (:require [hface.c3 :refer [gauge map-area]]))
+  (:require [hface.c3 :refer [gauge map-area q-area]]))
 
 (defn clear-chart [chart]
   (.load chart (clj->js {:unload true})))
@@ -18,6 +18,9 @@
 
 (defn map-area-chart [clazz]
   (map-area clazz))
+
+(defn q-area-chart [clazz]
+  (q-area clazz))
 
 (defn thresholds [t-max n] 
   (map #(* (float (/ t-max n)) %) 

@@ -6,7 +6,8 @@
                                           refresh-mem 
                                           refresh-os-mem 
                                           refresh-stats
-                                          update-map-area]]
+                                          update-map-area
+                                          update-q-area]]
               [hface.stats :refer [members 
                                    map-ops 
                                    map-highlevel
@@ -17,6 +18,7 @@
 (def stats (r/atom {}))
 (def active-map (r/atom {}))
 (def active-q (r/atom {}))
+(def active-chart (r/atom {:cluster-rate nil}))
 
 
 (defn switch-to-map [m t]                           ;;TODO: refactor this (state dependent) guy out to.. routes?
@@ -58,6 +60,11 @@
   (with-refresh (partial update-map-area active-map)
                 :map-stats
                 chart-for/map-area-chart))
+
+(defn q-stats []
+  (with-refresh (partial update-q-area active-q)
+                :queue-stats
+                chart-for/q-area-chart))
 
 (defn cluster-members []
   [:ul.nav.nav-second-level

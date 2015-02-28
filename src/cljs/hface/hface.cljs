@@ -5,6 +5,7 @@
               [goog.events :as events]
               [goog.history.EventType :as EventType]
               [hface.dash.component :refer [map-stats 
+                                            q-stats
                                             cpu-usage 
                                             memory-usage 
                                             cluster-members 
@@ -42,7 +43,8 @@
   ;; (reagent/render-component [current-page] (.getElementById js/document "app"))
   (reagent/render-component [cpu-usage] (.getElementById js/document "cluster-cpu"))
   (reagent/render-component [memory-usage] (.getElementById js/document "cluster-memory"))
-  (reagent/render-component [map-stats] (.getElementById js/document "map-area-chart"))
+  (reagent/render-component [map-stats] (.getElementById js/document "cluster-area-chart"))
+  ;; (reagent/render-component [q-stats] (.getElementById js/document "cluster-area-chart"))
   (reagent/render-component [cluster-members] (.getElementById js/document "cluster-members"))
   (reagent/render-component [hz-maps] (.getElementById js/document "maps"))
   (reagent/render-component [hz-mmaps] (.getElementById js/document "multi-maps"))
