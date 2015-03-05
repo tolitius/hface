@@ -49,8 +49,8 @@
   (reagent/render-component [hz-maps] (.getElementById js/document "maps"))
   (reagent/render-component [hz-mmaps] (.getElementById js/document "multi-maps"))
   (reagent/render-component [hz-queues] (.getElementById js/document "queues"))
-  (reagent/render-component [map-chart-name] (.getElementById js/document "chart-name"))
-  (reagent/render-component [q-chart-name] (.getElementById js/document "chart-name")))
+  ;; (reagent/render-component [q-chart-name] (.getElementById js/document "chart-name"))
+  (reagent/render-component [map-chart-name] (.getElementById js/document "chart-name")))
 
 ;; -------------------------
 ;; history

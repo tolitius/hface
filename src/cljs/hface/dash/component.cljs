@@ -32,7 +32,7 @@
 (every refresh-interval #(refresh-stats stats))
 
 (defn f-to-react 
- "react conponent needs to return [:div] or nil"
+ "react component needs to return [:div] or nil"
   [f]
   (fn [] (f) nil))
 
