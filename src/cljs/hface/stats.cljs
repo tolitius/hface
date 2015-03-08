@@ -40,8 +40,8 @@
 
 (defn q-ops [q stats qtype]
   (let [q-stats (-> @stats :aggregated qtype q)
-        polls (:number-of-polls q-stats)         ;; TODO: do q rates vs. absilutes
-        offers (:number-of-offers q-stats)]
+        polls (:take-rate q-stats)         ;; TODO: do q rates vs. absilutes
+        offers (:put-rate q-stats)]
     (int (+ polls offers))))
 
 (defn map-highlevel [{:keys [m-name m-type]} stats]

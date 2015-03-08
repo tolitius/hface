@@ -4,18 +4,16 @@
               [secretary.core :as secretary :include-macros true]
               [goog.events :as events]
               [goog.history.EventType :as EventType]
-              [hface.dash.component :refer [map-stats 
-                                            q-stats
+              [hface.dash.component :refer [divs
                                             cpu-usage 
                                             memory-usage 
                                             cluster-members 
                                             hz-maps 
                                             hz-mmaps 
                                             hz-queues 
+                                            empty-component
                                             switch-to-map 
-                                            switch-to-q
-                                            map-chart-name
-                                            q-chart-name]])
+                                            switch-to-q]])
     (:import goog.History))
 
 (defn current-page []
@@ -40,17 +38,17 @@
 ;; -------------------------
 ;; initialize app
 (defn init! []
-  ;; (reagent/render-component [current-page] (.getElementById js/document "app"))
-  (reagent/render-component [cpu-usage] (.getElementById js/document "cluster-cpu"))
-  (reagent/render-component [memory-usage] (.getElementById js/document "cluster-memory"))
-  (reagent/render-component [map-stats] (.getElementById js/document "cluster-area-chart"))
-  ;; (reagent/render-component [q-stats] (.getElementById js/document "cluster-area-chart"))
-  (reagent/render-component [cluster-members] (.getElementById js/document "cluster-members"))
-  (reagent/render-component [hz-maps] (.getElementById js/document "maps"))
-  (reagent/render-component [hz-mmaps] (.getElementById js/document "multi-maps"))
-  (reagent/render-component [hz-queues] (.getElementById js/document "queues"))
-  ;; (reagent/render-component [q-chart-name] (.getElementById js/document "chart-name"))
-  (reagent/render-component [map-chart-name] (.getElementById js/document "chart-name")))
+  (let [components {:cluster-cpu cpu-usage
+                    :cluster-memory memory-usage
+                    :cluster-members cluster-members
+                    :maps hz-maps
+                    :multi-maps hz-mmaps
+                    :queues hz-queues
+                    :cluster-area-chart empty-component
+                    :chart-name empty-component}]
+    (doall
+      (for [[el component] components]
+        (reagent/render-component [component] (el divs))))))
 
 ;; -------------------------
 ;; history

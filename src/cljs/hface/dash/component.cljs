@@ -13,23 +13,28 @@
                                    map-highlevel
                                    q-ops
                                    q-highlevel]]
-              [hface.tools :refer [every]]))
+              [hface.tools :refer [every by-id]]))
 
 (def stats (r/atom {}))
+
+;; TODO: refactor to a single atom (to be used with Om style cursors)
 (def active-map (r/atom {}))
 (def active-q (r/atom {}))
-(def active-chart (r/atom {:cluster-rate nil}))
 
-
-(defn switch-to-map [m t]                           ;;TODO: refactor this (state dependent) guy out to.. routes?
-  ;; TODO: clear the map chart
-  (reset! active-map {:m-name m :m-type t}))
-
-(defn switch-to-q [q t]                             ;;TODO: refactor this (state dependent) guy out to.. routes?
-  ;; TODO: clear the chart
-  (reset! active-q {:q-name q :q-type t}))
+(def divs {:cluster-cpu (by-id "cluster-cpu")
+           :cluster-memory (by-id "cluster-memory")
+           :cluster-area-chart (by-id "cluster-area-chart")
+           :cluster-members (by-id "cluster-members")
+           :maps (by-id "maps")
+           :multi-maps (by-id "multi-maps")
+           :queues (by-id "queues")
+           :chart-name (by-id "chart-name")})
 
 (every refresh-interval #(refresh-stats stats))
+
+;; to be unmountable. once I figure out how to check if component is mounted to a node, this can go
+(def empty-component 
+  (fn [] nil)) 
 
 (defn f-to-react 
  "react component needs to return [:div] or nil"
@@ -40,8 +45,12 @@
 
 (defn with-refresh [refresh clazz ui-component]
   (let [div (r/atom nil)
+        c (atom nil)
         refresh-it (with-meta (f-to-react #(refresh stats @div))
-                              {:component-did-mount #(reset! div (ui-component clazz))})]
+                              {:component-did-mount (fn [] (let [ui (ui-component clazz)] 
+                                                              (reset! c ui)
+                                                              (reset! div ui)))
+                               :component-will-unmount #(.destroy @c)})]
     (fn []
       [:div {:class clazz} 
         [refresh-it]])))
@@ -100,3 +109,29 @@
                 mem 
                 entries]} (q-highlevel @active-q stats)]
     [:span (str " " q-name ": entries [" entries "], memory [" mem "]")]))
+
+(defn switch-to-chart [c-name c-area 
+                       f-name f-area]
+    (r/unmount-component-at-node c-area)
+    (r/unmount-component-at-node c-name)
+    (r/render-component [f-area] c-area)
+    (r/render-component [f-name] c-name))
+
+(defn switch-to-map [m t]
+  ;; TODO: check if currently the same to noop
+  (reset! active-map {:m-name m :m-type t})
+  (let [{:keys [cluster-area-chart chart-name]} divs]
+    (switch-to-chart chart-name 
+                     cluster-area-chart 
+                     map-chart-name 
+                     map-stats)))
+
+(defn switch-to-q [q t]
+  ;; TODO: check if currently the same to noop
+  (reset! active-q {:q-name q :q-type t})
+  (let [{:keys [cluster-area-chart chart-name]} divs]
+    (switch-to-chart chart-name 
+                     cluster-area-chart 
+                     q-chart-name 
+                     q-stats)))
+

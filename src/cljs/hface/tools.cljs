@@ -19,3 +19,7 @@
 
 (defn byte-size [n]
   (js/filesize n))
+
+(defn by-id [id]
+  (.getElementById js/document id))
+
