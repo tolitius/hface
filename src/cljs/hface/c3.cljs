@@ -42,11 +42,12 @@
                            :names {:gets "gets/s"
                                    :puts "puts/s"
                                    :hits "total hits/s"}}
-                        :axis {:y "ops / s"
+                        :axis {:y {:label "ops/s"}
                                :x 
                                  {:label x-label
                                   :type "timeseries"
                                   :tick {:format x-format}
+                                  ;; :ticks 20
                                   }}}))))
 
 (defn q-area [elem & {:keys [x-span x-label x-format]    ;; only _maybe_ combine with map-area

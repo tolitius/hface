@@ -53,7 +53,7 @@
                                            ["puts" (:put-rate m-stats)]
                                            ["hits" (:hit-rate m-stats)]
                                            ["gets" (:get-rate m-stats)]]
-                                 :duration 4600}))))))
+                                 :duration 2000}))))))
 
 (defn update-q-area [q stats chart] 
   (let [{:keys [q-name q-type]} @q]
