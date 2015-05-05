@@ -23,7 +23,7 @@ it will be collecting the stats from all the nodes and will be sending them to h
 
 ## Visual
 
-Initial thinking:
+This is what hface dash currently looks like as it monitors the cluster:
 
 ![hface dash](https://github.com/tolitius/hface/blob/master/doc/hface-dash.png?raw=true)
 
