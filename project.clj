@@ -8,10 +8,11 @@
   ;; :keep-non-project-classes true
   :java-source-paths ["src/java"]
 
-  :jvm-opts ["-Dhface.conf=./resources/conf/hface.conf"]
+  :jvm-opts ["-Dconf=./resources/conf/hface.conf"]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [chazel "0.1.0-SNAPSHOT"]
+                 [cprop "0.1.0-SNAPSHOT"]
                  [com.facebook/react "0.11.2"]
                  [reagent "0.4.3"]
                  [reagent-utils "0.1.0"]

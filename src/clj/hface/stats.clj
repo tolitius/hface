@@ -1,7 +1,7 @@
 (ns hface.stats
   (:require [chazel :refer [proxy-to-instance client-instance]]
             [hface.util :refer [keys-to-keywords do-with-values]]
-            [hface.config :refer [conf]]
+            [cprop :refer [conf]]
             [clojure.java.data :as data]
             [clojure.tools.logging :refer [warn]]
             [cheshire.core :refer [parse-string]]
