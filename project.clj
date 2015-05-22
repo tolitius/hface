@@ -11,6 +11,7 @@
   :jvm-opts ["-Dhface.conf=./resources/conf/hface.conf"]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
+                 [chazel "0.1.0-SNAPSHOT"]
                  [com.facebook/react "0.11.2"]
                  [reagent "0.4.3"]
                  [reagent-utils "0.1.0"]
@@ -23,8 +24,6 @@
                  [prone "0.8.0"]
                  [selmer "0.7.7"]
                  [environ "1.0.0"]
-                 [com.hazelcast/hazelcast "3.4.1"]
-                 [com.hazelcast/hazelcast-client "3.4.1"]
                  [com.cognitect/transit-clj "0.8.259"]
                  [com.cognitect/transit-cljs "0.8.199"]
                  [cheshire "5.4.0"]
@@ -58,7 +57,7 @@ ui.routes {:handler hface.ui.routes/app}
                                         :optimizations :none
                                         :pretty-print  true}}}}
 
-  :profiles {:dev {:repl-options {:init-ns hface.hz
+  :profiles {:dev {:repl-options {:init-ns stats
                                   :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
 
                    :jvm-opts ["-Xmx4g"]

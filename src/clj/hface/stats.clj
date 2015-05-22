@@ -1,36 +1,16 @@
 (ns hface.stats
-  (:require [hface.hz :refer [proxy-to-instance client-instance]]
+  (:require [chazel :refer [proxy-to-instance client-instance]]
             [hface.util :refer [keys-to-keywords do-with-values]]
+            [hface.config :refer [conf]]
             [clojure.java.data :as data]
             [clojure.tools.logging :refer [warn]]
             [cheshire.core :refer [parse-string]]
             [clojure.string :as cstr])
-  (:import  [com.hazelcast.management TimedMemberStateFactory]
+  (:import  ;; [com.hazelcast.internal.management TimedMemberStateFactory]
             [com.hazelcast.core HazelcastInstanceAware]
             [java.util.concurrent Callable]
             [java.io Serializable]
             [org.hface InstanceStatsTask]))
-
-(defn instance-stats [instance]
-  (-> instance
-    proxy-to-instance
-    (TimedMemberStateFactory.)
-    (.createTimedMemberState)
-    (.toJson)
-    str))
-
-;; TODO: atom and hz instance are not serializable.. work in progress
-;; need this due to a figwheel bug: https://github.com/bhauman/lein-figwheel/issues/68#issuecomment-70163386
-(defn instance-stats-task []
-  (let [instance (atom nil)]
-    (reify 
-      HazelcastInstanceAware
-        (setHazelcastInstance [_ inst]
-          (swap! instance inst))
-      Callable
-        (call [_]
-          (instance-stats @instance))
-      Serializable)))
 
 (defn- member-statuses [instance]
   (try
@@ -106,7 +86,7 @@
     (assoc aggr-stats :top top-stats)))
 
 (defn cluster-stats []
-   (let [i-stats (per-instance-stats (client-instance))
+   (let [i-stats (per-instance-stats (client-instance (conf :hz-client)))
          a-stats (aggregate-across-cluster (vals i-stats))]
      {:per-node i-stats
       :aggregated (with-top i-stats a-stats)}))
@@ -114,3 +94,28 @@
 (defn m-stats [m]
   {:map (.getName m) 
    :stats (data/from-java (.getLocalMapStats m))})
+
+
+;; playground (currently is solved by hface-client.jar: i.e. no Clojure deps on HZ cluster)
+
+#_(defn instance-stats [instance]
+  (-> instance
+    proxy-to-instance
+    (TimedMemberStateFactory.)
+    (.createTimedMemberState)
+    (.toJson)
+    str))
+
+;; TODO: atom and hz instance are not serializable.. work in progress
+;; need this due to a figwheel bug: https://github.com/bhauman/lein-figwheel/issues/68#issuecomment-70163386
+#_(defn instance-stats-task []
+  (let [instance (atom nil)]
+    (reify 
+      HazelcastInstanceAware
+        (setHazelcastInstance [_ inst]
+          (swap! instance inst))
+      Callable
+        (call [_]
+          (instance-stats @instance))
+      Serializable)))
+
