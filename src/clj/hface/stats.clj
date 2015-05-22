@@ -85,8 +85,11 @@
   (let [top-stats (aggregate-top instance-stats)]
     (assoc aggr-stats :top top-stats)))
 
+(def hz-instance
+  (delay (client-instance (conf :hz-client))))
+
 (defn cluster-stats []
-   (let [i-stats (per-instance-stats (client-instance (conf :hz-client)))
+   (let [i-stats (per-instance-stats @hz-instance)
          a-stats (aggregate-across-cluster (vals i-stats))]
      {:per-node i-stats
       :aggregated (with-top i-stats a-stats)}))
