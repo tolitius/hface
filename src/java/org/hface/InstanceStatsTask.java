@@ -6,7 +6,7 @@ import com.hazelcast.instance.HazelcastInstanceImpl;
 import com.hazelcast.instance.HazelcastInstanceProxy;
 import com.hazelcast.logging.ILogger;
 import com.hazelcast.logging.Logger;
-import com.hazelcast.management.TimedMemberStateFactory                 // hz <  3.5
+import com.hazelcast.management.TimedMemberStateFactory;                // hz <  3.5
 // import com.hazelcast.internal.management.TimedMemberStateFactory;    // hz >= 3.5
 
 import java.io.Serializable;
