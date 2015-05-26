@@ -41,7 +41,9 @@
 ui.routes {:handler hface.ui.routes/app}
 
   :min-lein-version "2.5.0"
-  :jar-exclusions [#"(clj)|(public)|(sample)|(dash)|(conf)|(templates)|(ui)"]
+
+  ;; uncomment to build a hface-client jar. otherwise exclusions would apply to uberjar          
+  ;; :jar-exclusions [#"(clj)|(public)|(sample)|(dash)|(conf)|(templates)|(ui)"]
 
   :jar-name "hface-client.jar"
             
@@ -94,6 +96,11 @@ ui.routes {:handler hface.ui.routes/app}
                    :cljsbuild {:builds {:app {:source-paths ["env/dev/cljs"]
                                               :compiler {:source-map true}}}}}
 
+             ;; creating and executing an "uberjar"
+             ;;
+             ;; lein do cljsbuild clean, ring uberjar
+             ;; java -jar -Dconf=/tmp/hface.conf target/hface.jar
+
              :uberjar {:hooks [leiningen.cljsbuild minify-assets.plugin/hooks]
                        :env {:production true}
                        :aot :all
@@ -104,7 +111,7 @@ ui.routes {:handler hface.ui.routes/app}
                                    :builds {:app
                                              {:source-paths ["env/prod/cljs"]
                                               :compiler
-                                              {:optimizations :advanced
+                                              {:optimizations :whitespace      ;; :advenced breaks C3 js
                                                :pretty-print false}}}}}
 
              :production {:ring {:open-browser? false
