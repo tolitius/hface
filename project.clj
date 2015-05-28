@@ -38,8 +38,6 @@
             [lein-ring "0.8.13"]
             [lein-asset-minifier "0.2.0"]]
 
-ui.routes {:handler hface.ui.routes/app}
-
   :min-lein-version "2.5.0"
 
   ;; uncomment to build a hface-client jar. otherwise exclusions would apply to uberjar          
