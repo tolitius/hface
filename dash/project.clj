@@ -1,18 +1,17 @@
 (defproject hface "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :description "look your Hazelcast cluster in the face!"
+  :url "https://github.com/tolitius/hface"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :source-paths ["src/clj" "src/cljs"]
-  ;; :keep-non-project-classes true
-  :java-source-paths ["src/java"]
 
   :jvm-opts ["-Dconf=./resources/conf/hface.conf"]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [chazel "0.1.0-SNAPSHOT"]
                  [cprop "0.1.0-SNAPSHOT"]
+                 [com.gitpod/hface-client "0.1.0-SNAPSHOT"]
                  [com.facebook/react "0.11.2"]
                  [reagent "0.4.3"]
                  [reagent-utils "0.1.0"]
@@ -32,22 +31,14 @@
                  [org.clojure/tools.logging "0.3.1"]
                  [org.clojure/java.data "0.1.1"]]
 
-  :plugins [
-            [lein-cljsbuild "1.0.3"]
+  :plugins [[lein-cljsbuild "1.0.3"]
             [lein-environ "1.0.0"]
             [lein-ring "0.8.13"]
             [lein-asset-minifier "0.2.0"]]
 
-ui.routes {:handler hface.ui.routes/app}
-
   :min-lein-version "2.5.0"
 
-  ;; uncomment to build a hface-client jar. otherwise exclusions would apply to uberjar          
-  ;; :jar-exclusions [#"(clj)|(public)|(sample)|(dash)|(conf)|(templates)|(ui)"]
-
-  :jar-name "hface-client.jar"
-            
-  :uberjar-name "hface.jar"
+  :uberjar-name "hface-dash.jar"
 
   :minify-assets
   {:assets
@@ -75,8 +66,7 @@ ui.routes {:handler hface.ui.routes/app}
                                   [com.cemerick/piggieback "0.1.5"]
                                   [weasel "0.6.0-SNAPSHOT"]
                                   [leiningen "2.5.0"]
-                                  [figwheel "0.2.5-SNAPSHOT"]
-                                  [org.hface/hface-client "0.1.0"]]            ;; is needed until figweel bug (https://github.com/bhauman/lein-figwheel/issues/68) is fixed
+                                  [figwheel "0.2.5-SNAPSHOT"]]
 
                    :plugins [[lein-figwheel "0.2.3-SNAPSHOT"]]
 
@@ -98,8 +88,8 @@ ui.routes {:handler hface.ui.routes/app}
 
              ;; creating and executing an "uberjar"
              ;;
-             ;; lein do cljsbuild clean, ring uberjar
-             ;; java -jar -Dconf=/tmp/hface.conf target/hface.jar
+             ;; lein do clean, cljsbuild clean, ring uberjar
+             ;; java -jar -Dconf=/tmp/hface.conf target/hface-dash.jar
 
              :uberjar {:hooks [leiningen.cljsbuild minify-assets.plugin/hooks]
                        :env {:production true}
@@ -111,9 +101,22 @@ ui.routes {:handler hface.ui.routes/app}
                                    :builds {:app
                                              {:source-paths ["env/prod/cljs"]
                                               :compiler
-                                              {:optimizations :whitespace      ;; :advenced breaks C3 js
+                                              {:optimizations :whitespace      ;; :advanced breaks C3 js
                                                :pretty-print false}}}}}
 
              :production {:ring {:open-browser? false
                                  :stacktraces?  false
-                                 :auto-reload?  false}}})
+                                 :auto-reload?  false}}}
+
+  :scm {:url "https://github.com/tolitius/hface.git"}
+
+  :pom-addition [:developers [:developer {:id "tolitius"}
+                             [:name "Anatoly"]
+                             [:url "https://github.com/tolitius"]]]
+
+  :repositories {"snapshots" {:url "https://oss.sonatype.org/content/repositories/snapshots/"}}
+
+  :deploy-repositories {"releases" {:url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                                    :creds :gpg}
+                        "snapshots" {:url "https://oss.sonatype.org/content/repositories/snapshots/"
+                                     :creds :gpg}})
