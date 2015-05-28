@@ -1,4 +1,4 @@
-(defproject com.gitpod/hface-client "0.1.0-SNAPSHOT"
+(defproject com.gitpod/hface-client "0.1.0"
   :description "look your Hazelcast cluster in the face!"
   :url "https://github.com/tolitius/hface"
   :license {:name "Eclipse Public License"
@@ -6,15 +6,23 @@
 
   :java-source-paths ["src/java"]
 
-  :dependencies [[chazel "0.1.0-SNAPSHOT"]]
+  :dependencies [[chazel "0.1.0"]]
 
-  :scm {:url "https://github.com/tolitius/hface.git"}
+  :scm {:name "git"
+        :url "https://github.com/tolitius/hface.git"}
 
-  :pom-addition [:developers [:developer {:id "tolitius"}
-                             [:name "Anatoly"]
-                             [:url "https://github.com/tolitius"]]]
+  :pom-addition [:developers [:developer 
+                               [:id "tolitius"]
+                               [:name "Anatoly"]
+                               [:url "https://github.com/tolitius"]]]
 
   :deploy-repositories {"releases" {:url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
                                     :creds :gpg}
                         "snapshots" {:url "https://oss.sonatype.org/content/repositories/snapshots/"
-                                     :creds :gpg}})
+                                     :creds :gpg}}
+            
+  :classifiers {:javadoc {:java-source-paths ^:replace ["src/java"]
+                          :source-paths ^:replace []
+                          :resource-paths ^:replace []}
+                :sources {:java-source-paths ^:replace ["src/java"]
+                          :resource-paths ^:replace []}})
