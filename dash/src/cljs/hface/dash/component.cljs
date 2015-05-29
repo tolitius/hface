@@ -9,6 +9,7 @@
                                           update-map-area
                                           update-q-area]]
               [hface.stats :refer [members 
+                                   cluster-name
                                    map-ops 
                                    map-highlevel
                                    q-ops
@@ -25,6 +26,7 @@
            :cluster-memory (by-id "cluster-memory")
            :cluster-area-chart (by-id "cluster-area-chart")
            :cluster-members (by-id "cluster-members")
+           :cluster-name (by-id "cluster-name")
            :maps (by-id "maps")
            :multi-maps (by-id "multi-maps")
            :queues (by-id "queues")
@@ -74,6 +76,9 @@
   (with-refresh (partial update-q-area active-q)
                 :queue-stats
                 chart-for/q-area-chart))
+
+(defn dash-name []
+  [:span.label.label-default (cluster-name @stats)])
 
 (defn cluster-members []
   [:ul.nav.nav-second-level

@@ -24,6 +24,11 @@
   (-> @stats :aggregated :top :os-memory-total-physical-memory))
 
 
+(defn cluster-name [s]
+  (.log js/console (clj->js s))
+  (if (seq s)
+    (-> s :per-node first val :cluster-name)))
+
 ;; members
 
 (defn members [s]

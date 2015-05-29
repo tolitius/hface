@@ -360,3 +360,7 @@ table.dataTable thead .sorting:after {
 .well-gauge {
     background-color: rgba(245, 245, 245, 0.4);
 }
+
+#cluster-name {
+    margin-left: 2px;
+}

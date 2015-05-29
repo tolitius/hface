@@ -1,5 +1,7 @@
 dash/target/*
+*DS_Store
 dash/classes
+dash/**/app.js
 dash/checkouts
 dash/pom.xml
 dash/pom.xml.asc

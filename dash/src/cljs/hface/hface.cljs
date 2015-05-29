@@ -7,6 +7,7 @@
               [hface.dash.component :refer [divs
                                             cpu-usage 
                                             memory-usage 
+                                            dash-name
                                             cluster-members 
                                             hz-maps 
                                             hz-mmaps 
@@ -41,6 +42,7 @@
   (let [components {:cluster-cpu cpu-usage
                     :cluster-memory memory-usage
                     :cluster-members cluster-members
+                    :cluster-name dash-name
                     :maps hz-maps
                     :multi-maps hz-mmaps
                     :queues hz-queues
