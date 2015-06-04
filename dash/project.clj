@@ -51,7 +51,7 @@
                                         :optimizations :none
                                         :pretty-print  true}}}}
 
-  :profiles {:dev {:repl-options {:init-ns stats
+  :profiles {:dev {:repl-options {:init-ns hface.stats
                                   :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
 
                    :jvm-opts ["-Xmx4g"]
