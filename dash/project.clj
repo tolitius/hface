@@ -9,7 +9,7 @@
   :jvm-opts ["-Dconf=./resources/conf/hface.conf"]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [chazel "0.1.1"]
+                 [chazel "0.1.2-SNAPSHOT"]
                  [cprop "0.1.0"]
                  [com.gitpod/hface-client "0.1.0"]
                  [com.facebook/react "0.11.2"]
