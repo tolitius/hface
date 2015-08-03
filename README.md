@@ -51,7 +51,9 @@ hface dashboard relies on a little configuraion file that can be pointed to by `
 {:collector {:refresh-interval 4}                       ;; refresh cluster stats every 4 seconds
  :hz-client {:hosts ["127.0.0.1" "127.0.0.2"]           ;; hazelcast cluster hosts/ips
              :retry-ms 5000                             ;; retry to reconnect in 5 seconds
-             :retry-max 720000}}                        ;; 720000 * 5000 = one hour
+             :retry-max 720000                          ;; 720000 * 5000 = one hour
+             :group-name "dev"                          ;; creds to the cluster (dev/dev-pass are hz defaults)
+             :group-password "dev-pass"}}
 ```
 
 ### from sources
