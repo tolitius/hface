@@ -1,4 +1,4 @@
-(defproject org.hface/hface-client "0.1.1"
+(defproject org.hface/hface-client "0.1.2"
   :description "look your Hazelcast cluster in the face!"
   :url "https://github.com/tolitius/hface"
   :license {:name "Eclipse Public License"
@@ -6,7 +6,7 @@
 
   :java-source-paths ["src/java"]
 
-  :dependencies [[com.hazelcast/hazelcast "3.4.2"]]
+  :dependencies [[com.hazelcast/hazelcast "3.5.3"]]
 
   ;; ceremony for maven central
 
