@@ -8,10 +8,9 @@
 
   :jvm-opts ["-Dconf=./resources/conf/hface.conf"]
 
-  :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.hface/hface-client "0.1.2"]
-                 [chazel "0.1.7"]
-                 [cprop "0.1.0"]
+  :dependencies [[org.clojure/clojure "1.6.0"]  ;; can't bump yet because of compojure 1.3.1, which can't bump because of other deps, ...
+                 [chazel "0.1.9"]
+                 [cprop "0.1.7"]
                  [com.facebook/react "0.11.2"]
                  [reagent "0.4.3"]
                  [reagent-utils "0.1.0"]
@@ -94,7 +93,8 @@
              :uberjar {:hooks [leiningen.cljsbuild minify-assets.plugin/hooks]
                        :env {:production true}
                        :aot :all
-                       :omit-source true
+                       ;; :omit-source true
+
                        ;;TODO: figure out how to clean properly
                        ;:prep-tasks [["cljsbuild" "clean"]]
                        :cljsbuild {:jar true

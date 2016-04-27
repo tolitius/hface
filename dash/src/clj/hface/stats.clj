@@ -1,7 +1,7 @@
 (ns hface.stats
   (:require [chazel :refer [proxy-to-instance client-instance]]
             [hface.util :refer [keys-to-keywords do-with-values]]
-            [cprop :refer [conf]]
+            [cprop.core :refer [load-config]]
             [clojure.java.data :as data]
             [clojure.tools.logging :refer [warn]]
             [cheshire.core :refer [parse-string]]
@@ -86,7 +86,9 @@
     (assoc aggr-stats :top top-stats)))
 
 (def hz-instance
-  (delay (client-instance (conf :hz-client))))
+  (delay
+    (let [conf (load-config)]
+      (client-instance (conf :hz-client)))))
 
 (defn cluster-stats []
    (let [i-stats (per-instance-stats @hz-instance)
@@ -97,6 +99,8 @@
 (defn m-stats [m]
   {:map (.getName m) 
    :stats (data/from-java (.getLocalMapStats m))})
+
+
 
 
 ;; playground (currently is solved by hface-client.jar: i.e. no Clojure deps on HZ cluster)
