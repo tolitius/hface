@@ -8,32 +8,29 @@
 
   :jvm-opts ["-Dconf=./resources/conf/hface.conf"]
 
-  :dependencies [[org.clojure/clojure "1.6.0"]  ;; can't bump yet because of compojure 1.3.1, which can't bump because of other deps, ...
+  :dependencies [[org.clojure/clojure "1.8.0"]
                  [chazel "0.1.9"]
                  [cprop "0.1.7"]
-                 [com.facebook/react "0.11.2"]
-                 [reagent "0.4.3"]
-                 [reagent-utils "0.1.0"]
-                 [secretary "1.2.1"]
-                 [org.clojure/clojurescript "0.0-2850" :scope "provided"]
-                 [com.andrewmcveigh/cljs-time "0.3.2"]
-                 [ring "1.3.2"]
-                 [ring/ring-defaults "0.1.2"]
-                 [compojure "1.3.1"]
-                 [prone "0.8.0"]
-                 [selmer "0.7.7"]
-                 [environ "1.0.0"]
-                 [com.cognitect/transit-clj "0.8.259"]
-                 [com.cognitect/transit-cljs "0.8.199"]
-                 [cheshire "5.4.0"]
+                 [reagent "0.6.0-alpha"]
+                 [reagent-utils "0.1.8"]
+                 [secretary "1.2.3"]
+                 [org.clojure/clojurescript "1.8.51"]
+                 [com.andrewmcveigh/cljs-time "0.4.0"]
+                 [ring "1.4.0"]
+                 [ring/ring-defaults "0.2.0"]
+                 [compojure "1.5.0"]
+                 [prone "1.1.1"]
+                 [selmer "1.0.4"]
+                 [com.cognitect/transit-clj "0.8.285"]
+                 [com.cognitect/transit-cljs "0.8.237"]
+                 [cheshire "5.6.1"]
                  [clj-wallhack "1.0.1"]
                  [org.clojure/tools.logging "0.3.1"]
                  [org.clojure/java.data "0.1.1"]]
 
-  :plugins [[lein-cljsbuild "1.0.3"]
-            [lein-environ "1.0.0"]
-            [lein-ring "0.8.13"]
-            [lein-asset-minifier "0.2.0"]]
+  :plugins [[lein-cljsbuild "1.1.3"]
+            [lein-ring "0.9.7"]
+            [lein-asset-minifier "0.2.8"]]
 
   :min-lein-version "2.5.0"
 
@@ -58,16 +55,16 @@
                    :test-paths ["test/clj" "test/cljs"]
                    :source-paths ["env/dev/clj"]
 
-                   :dependencies [[ring-mock "0.1.5"]
-                                  [ring/ring-devel "1.3.2"]
-                                  [pjstadig/humane-test-output "0.6.0"]
-                                  [monr "0.1.5"]
-                                  [com.cemerick/piggieback "0.1.5"]
-                                  [weasel "0.6.0-SNAPSHOT"]
+                   :dependencies [[ring/ring-mock "0.3.0"]
+                                  [ring/ring-devel "1.4.0"]
+                                  [pjstadig/humane-test-output "0.8.0"]
+                                  [monr "0.1.6"]
+                                  [com.cemerick/piggieback "0.2.1"]
+                                  [weasel "0.7.0"]
                                   [leiningen "2.5.0"]
-                                  [figwheel "0.2.5-SNAPSHOT"]]
+                                  [figwheel "0.5.2"]]
 
-                   :plugins [[lein-figwheel "0.2.3-SNAPSHOT"]]
+                   :plugins [[lein-figwheel "0.5.2"]]
 
                    :injections [(require 'pjstadig.humane-test-output)
                                 (pjstadig.humane-test-output/activate!)]
@@ -79,9 +76,6 @@
 
                    :ring {:handler hface.ui.routes/app}
 
-                   :env {:dev? true
-                         :refresh-interval 4}
-
                    :cljsbuild {:builds {:app {:source-paths ["env/dev/cljs"]
                                               :compiler {:source-map true}}}}}
 
@@ -91,7 +85,6 @@
              ;; java -jar -Dconf=/tmp/hface.conf target/hface-dash.jar
 
              :uberjar {:hooks [leiningen.cljsbuild minify-assets.plugin/hooks]
-                       :env {:production true}
                        :aot :all
                        ;; :omit-source true
 
