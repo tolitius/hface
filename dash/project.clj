@@ -88,8 +88,10 @@
                        :aot :all
                        ;; :omit-source true
 
+                       :ring {:handler hface.ui.routes/app}
+
                        ;;TODO: figure out how to clean properly
-                       ;:prep-tasks [["cljsbuild" "clean"]]
+                       ;; :prep-tasks [["cljsbuild" "clean"]]
                        :cljsbuild {:jar true
                                    :builds {:app
                                              {:source-paths ["env/prod/cljs"]
