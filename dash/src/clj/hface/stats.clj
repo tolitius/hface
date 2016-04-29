@@ -72,10 +72,11 @@
     (if (> (count stats) 1)    ;; more than one node in the cluster
 
       ;; multiple nodes
-      (for [[k v] (apply merge-with vector
+      (for [[k v] (apply merge-with +                             ;; replace "+" with "vector" and enable average top below if needed
                          (map (comp :runtime-props :member-state) 
                               (vals stats)))] 
-        [(no-dots k) (non-negative-average (flatten v))])
+        ;; [(no-dots k) (non-negative-average (flatten v))])      ;; average top per node
+        [(no-dots k) v])                                          ;; overall aggregated cluster top
 
       ;; single node
       (for [[k v] (-> stats vals first :member-state :runtime-props)] 
