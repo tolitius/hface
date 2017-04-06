@@ -9,7 +9,7 @@
   :jvm-opts ["-Dconf=./resources/conf/hface.conf"]
 
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [chazel "0.1.9"]
+                 [chazel "0.1.13-SNAPSHOT"]
                  [cprop "0.1.7"]
                  [reagent "0.6.0-alpha"]
                  [reagent-utils "0.1.8"]
