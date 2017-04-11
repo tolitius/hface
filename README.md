@@ -1,4 +1,4 @@
-#hface
+# hface
 
 look your Hazelcast cluster in the face!
 
@@ -59,14 +59,14 @@ hface dashboard relies on a little configuraion file that can be pointed to by `
 ### from sources
 
 * clone the repo (e.g. `git clone https://github.com/tolitius/hface.git`)
-* cd hface/dash
-* lein ring uberjar
-* java -jar -Dconf=/path-to/hface.conf target/hface-dash.jar
+* `cd hface/dash`
+* `lein ring uberjar`
+* `java -jar -Dconf=/path-to/hface.conf target/hface-dash.jar`
 
 then just go to [http://localhost:3000/](http://localhost:3000/)
 
 ## License
 
-Copyright © 2015 tolitius
+Copyright © 2017 tolitius
 
 Distributed under the Eclipse Public License, the same as Clojure.
