@@ -6,14 +6,12 @@ look your Hazelcast cluster in the face!
 
 ![hface braindump](https://github.com/tolitius/hface/blob/master/doc/hface-braindump.jpg?raw=true)
 
-## Gist
+## The Gist
 
-Until the full docs arrive here is the gist.
-
-hface will monitor a distributed Hazelcast cluster in real time. It currently supports maps, multimaps and queues. 
+`hface` monitors a Hazelcast cluster in real time. It currently supports maps, multimaps and queues. 
 Support for other distributed data structures is coming.
 
-In order to monitor a remote Hazelcast cluster add an 8K jar dependency to it:
+In order to monitor a remote Hazelcast cluster add an `8K` jar dependency to it:
 
 [![Clojars Project](http://clojars.org/org.hface/hface-client/latest-version.svg)](http://clojars.org/org.hface/hface-client)
 
@@ -23,11 +21,11 @@ or
 <dependency>
   <groupId>org.hface</groupId>
   <artifactId>hface-client</artifactId>
-  <version>0.1.3</version>
+  <version>0.1.4</version>
 </dependency>
 ```
 
-it will be collecting the stats from all the nodes and will be sending them to hface for a visual pleasure.
+it will be collecting the stats from all the nodes and will be sending these stats to `hface` for aggregation and visual pleasure.
 
 ## Visual
 
@@ -39,13 +37,13 @@ This is what hface dash currently looks like as it monitors the cluster:
 
 All the stats are also available in JSON via `/stats`:
 
-![hface stats json](https://raw.githubusercontent.com/tolitius/hface/master/doc/stats.json.png?raw=true)
+<img alt="Hazelcast cluster stats" width="35%" src="https://raw.githubusercontent.com/tolitius/hface/master/doc/stats.json.png?raw=true"/>
 
 ## Run it
 
 ### hface config
 
-hface dashboard relies on a little configuraion file that can be pointed to by `-Dconf=path-to-config`. Here is a sample config:
+hface dashboard relies on a small configuraion file that can be pointed to by `-Dconf=path-to-config`. Here is a sample config:
 
 ```clojure
 {:collector {:refresh-interval 4}                       ;; refresh cluster stats every 4 seconds
@@ -63,7 +61,7 @@ hface dashboard relies on a little configuraion file that can be pointed to by `
 * `lein ring uberjar`
 * `java -jar -Dconf=/path-to/hface.conf target/hface-dash.jar`
 
-then just go to [http://localhost:3000/](http://localhost:3000/)
+then, for joy, go to [http://localhost:3000/](http://localhost:3000/)
 
 ## License
 
