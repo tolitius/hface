@@ -1,5 +1,5 @@
 (ns hface.stats
-  (:require [chazel :refer [proxy-to-instance client-instance]]
+  (:require [chazel.core :refer [proxy-to-instance client-instance]]
             [hface.util :refer [keys-to-keywords do-with-values]]
             [cprop.core :refer [load-config]]
             [clojure.java.data :as data]

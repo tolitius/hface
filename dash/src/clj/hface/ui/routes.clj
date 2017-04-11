@@ -1,7 +1,7 @@
 (ns hface.ui.routes
   (:require [hface.refresh :refer [collect-stats stats]]
             [hface.util :refer [to-transit]]
-            [chazel :refer [cluster-of]]
+            [chazel.core :refer [cluster-of]]
             [clojure.tools.logging :refer [info]]
             [compojure.core :refer [GET] :as c]
             [compojure.route :refer [not-found resources]]

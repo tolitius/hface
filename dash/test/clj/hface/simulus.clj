@@ -1,5 +1,5 @@
 (ns hface.simulus
-  (:require [chazel :refer [cluster-of hz-map hz-mmap hz-queue]])
+  (:require [chazel.core :refer [cluster-of hz-map hz-mmap hz-queue]])
   (:refer-clojure :exclude [take])
   (:import [java.util UUID]))
 
