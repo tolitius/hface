@@ -21,7 +21,7 @@ or
 <dependency>
   <groupId>org.hface</groupId>
   <artifactId>hface-client</artifactId>
-  <version>0.1.4</version>
+  <version>0.1.5</version>
 </dependency>
 ```
 
