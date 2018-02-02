@@ -44,7 +44,7 @@
                 (apply interleave) 
                 (group-by first))
         groupped (do-with-values ms #(map second %))]
-    {kind (do-with-values groupped #(apply merge-with + %))}))
+    {kind (do-with-values groupped #(apply merge-with +' %))}))
 
 (defn aggregate-across-cluster [i-stats]
   (into {} 
