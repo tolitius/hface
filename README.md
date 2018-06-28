@@ -25,7 +25,7 @@ or
 </dependency>
 ```
 
-it will be collecting the stats from all the nodes and will be sending these stats to `hface` for aggregation and visual pleasure.
+it will be collecting the stats from all the nodes and will be sending these stats to `hface` for aggregation and visual pleasure. Here is [an example](https://github.com/tolitius/hface-server) of a simple Hazelcast server node with an hface client dependency.
 
 ## Visual
 
@@ -65,6 +65,6 @@ then, for joy, go to [http://localhost:3000/](http://localhost:3000/)
 
 ## License
 
-Copyright © 2017 tolitius
+Copyright © 2018 tolitius
 
 Distributed under the Eclipse Public License, the same as Clojure.
