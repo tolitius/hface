@@ -44,7 +44,7 @@
 
 ;;-----------------------------------------------------------------
 
-(defn refresh-stats 
+(defn refresh-stats
   "refreshing stats and adding rate metrics"
   [previous interval]
   (let [with-rates (-> (cluster-stats)
@@ -53,7 +53,7 @@
                        (add-ratings @previous rate-q interval :queue-stats))]
     (reset! previous with-rates)))
 
-(defn collect-stats 
+(defn collect-stats
   "scheduling stats refresh on every 'interval'"
   [interval]
   (every interval #(refresh-stats stats interval)))

@@ -7,17 +7,17 @@
 
 ;; schedule a function to run every.. TimeUnit
 (defn every
-  ([interval fun] 
+  ([interval fun]
    (every interval fun TimeUnit/SECONDS))
-  ([interval fun time-unit] 
+  ([interval fun time-unit]
    (let [f #(try (fun) (catch Exception e (error (.printStackTrace e System/out))))]
-    (.scheduleAtFixedRate (Executors/newScheduledThreadPool 1) 
+    (.scheduleAtFixedRate (Executors/newScheduledThreadPool 1)
       f 0 interval time-unit))))
 
 ;; a shorthand to write out data to transit
 ;; adopted from "https://github.com/jalehman/ring-transit"
-(defn to-transit 
-  ([data] 
+(defn to-transit
+  ([data]
    (to-transit data :json {}))
   ([x t opts]
     (let [baos (ByteArrayOutputStream.)
@@ -29,21 +29,21 @@
 
 ;; given a CamelCased string, converts it to hyphenated keyword
 (defn camel-to-hyphen [k]
-  (->> (map s/lower-case 
+  (->> (map s/lower-case
             (s/split (name k) #"(?=[A-Z])"))
     (s/join "-")
     keyword))
 
 (defn keys-to-keywords [m]
-  (into {} 
-        (for [[k v] m] 
+  (into {}
+        (for [[k v] m]
           [(camel-to-hyphen k) (if (map? v)
                                  (keys-to-keywords v)
                                  v)])))
 
 (defn do-with-values [m f]
-  (into {} 
-        (for [[k v] m] 
+  (into {}
+        (for [[k v] m]
           [k (f v)])))
 
 ;; modified "assoc" for IMap/Map

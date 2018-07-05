@@ -8,15 +8,15 @@
                           height 180
                           pattern ["#60B044" "#F6C600" "#F97600" "#FF0000"]
                           thresholds [30 60 90 100]}}]
-  (.generate js/c3 (clj->js 
+  (.generate js/c3 (clj->js
                      {:bindto (to-css-class elem)
-                      :data 
+                      :data
                         {:columns [[data-is init-value]]
                          :type "gauge"}
-                      :gauge {:max 100 
+                      :gauge {:max 100
                               :width 25
                               :label label}
-                      :color 
+                      :color
                         {:pattern pattern
                          :threshold {:values thresholds
                                      :unit "%"}}
@@ -28,9 +28,9 @@
                                x-format "%H:%M:%S"}}]
   (let [zeros (replicate (count x-span) 0)]
     ;; (.log js/console (clj->js (cons "x" x-span)))
-    (.generate js/c3 (clj->js 
+    (.generate js/c3 (clj->js
                        {:bindto (to-css-class elem)
-                        :data 
+                        :data
                           {:x "x"
                            :columns [(cons "x" x-span)
                                      (cons "puts" zeros)
@@ -43,7 +43,7 @@
                                    :puts "puts/s"
                                    :hits "total hits/s"}}
                         :axis {:y {:label "ops/s"}
-                               :x 
+                               :x
                                  {:label x-label
                                   :type "timeseries"
                                   :tick {:format x-format}
@@ -56,9 +56,9 @@
                              x-format "%H:%M:%S"}}]
   (let [zeros (replicate (count x-span) 0)]
     ;; (.log js/console (clj->js (cons "x" x-span)))
-    (.generate js/c3 (clj->js 
+    (.generate js/c3 (clj->js
                        {:bindto (to-css-class elem)
-                        :data 
+                        :data
                           {:x "x"
                            :columns [(cons "x" x-span)
                                      (cons "puts" zeros)
@@ -74,7 +74,7 @@
                                    :takes "takes/s"
                                    :empty-takes "empty takes/s"}}
                         :axis {:y "ops / s"
-                               :x 
+                               :x
                                  {:label x-label
                                   :type "timeseries"
                                   :tick {:format x-format}

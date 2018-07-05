@@ -25,7 +25,7 @@
 
 
 (defn cluster-name [s]
-  (.log js/console (clj->js s))
+  ; (.log js/console (clj->js s))
   (if (seq s)
     (-> s :per-node first val :cluster-name)))
 
@@ -52,7 +52,7 @@
 (defn map-highlevel [{:keys [m-name m-type]} stats]
   (if (and (seq m-name) m-type (seq @stats))
     (let [m-name (keyword m-name)
-          {:keys [owned-entry-count heap-cost]} 
+          {:keys [owned-entry-count heap-cost]}
           (-> @stats :aggregated m-type m-name)]
       {:map-name m-name :entries owned-entry-count :mem (byte-size heap-cost)})
       {:map-name "didn't specify" :entries "no entries" :mem "takes no memory"}))
@@ -60,7 +60,7 @@
 (defn q-highlevel [{:keys [q-name q-type]} stats]  ;; TODO: add mem usage, once hz has it
   (if (and (seq q-name) q-type (seq @stats))
     (let [q-name (keyword q-name)
-          {:keys [owned-item-count]} 
+          {:keys [owned-item-count]}
           (-> @stats :aggregated q-type q-name)]
       {:q-name q-name :entries owned-item-count})
       {:q-name "didn't specify" :entries "no entries"}))

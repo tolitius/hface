@@ -5,15 +5,15 @@
               [goog.events :as events]
               [goog.history.EventType :as EventType]
               [hface.dash.component :refer [divs
-                                            cpu-usage 
-                                            memory-usage 
+                                            cpu-usage
+                                            memory-usage
                                             dash-name
-                                            cluster-members 
-                                            hz-maps 
-                                            hz-mmaps 
-                                            hz-queues 
+                                            cluster-members
+                                            hz-maps
+                                            hz-mmaps
+                                            hz-queues
                                             empty-component
-                                            switch-to-map 
+                                            switch-to-map
                                             switch-to-q]])
     (:import goog.History))
 

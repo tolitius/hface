@@ -23,7 +23,7 @@
 
 
 (defn per-instance-stats [instance]
-  (into {} 
+  (into {}
     (map (fn [[host futr]]
            (try
              (let [stats (-> (.get futr)
@@ -40,19 +40,19 @@
 
 (defn merge-stats [kind i-stats]
   (let [ms (map #(-> % :member-state kind) i-stats)
-        ms (->> ms 
-                (apply interleave) 
+        ms (->> ms
+                (apply interleave)
                 (group-by first))
         groupped (do-with-values ms #(map second %))]
     {kind (do-with-values groupped #(apply merge-with +' %))}))
 
 (defn aggregate-across-cluster [i-stats]
-  (into {} 
-        (map #(merge-stats % i-stats) 
-          [:map-stats 
-           :multi-map-stats 
-           :queue-stats 
-           :topic-stats 
+  (into {}
+        (map #(merge-stats % i-stats)
+          [:map-stats
+           :multi-map-stats
+           :queue-stats
+           :topic-stats
            :executor-stats])))
 
 (defn non-negative-average [xs]
@@ -68,18 +68,18 @@
       keyword))
 
 (defn aggregate-top [stats]
-  (into {} 
+  (into {}
     (if (> (count stats) 1)    ;; more than one node in the cluster
 
       ;; multiple nodes
       (for [[k v] (apply merge-with +                             ;; replace "+" with "vector" and enable average top below if needed
-                         (map (comp :runtime-props :member-state) 
-                              (vals stats)))] 
+                         (map (comp :runtime-props :member-state)
+                              (vals stats)))]
         ;; [(no-dots k) (non-negative-average (flatten v))])      ;; average top per node
         [(no-dots k) v])                                          ;; overall aggregated cluster top
 
       ;; single node
-      (for [[k v] (-> stats vals first :member-state :runtime-props)] 
+      (for [[k v] (-> stats vals first :member-state :runtime-props)]
         [(no-dots k) v]))))
 
 (defn with-top [instance-stats aggr-stats]
@@ -98,7 +98,7 @@
       :aggregated (with-top i-stats a-stats)}))
 
 (defn m-stats [m]
-  {:map (.getName m) 
+  {:map (.getName m)
    :stats (data/from-java (.getLocalMapStats m))})
 
 
@@ -118,7 +118,7 @@
 ;; need this due to a figwheel bug: https://github.com/bhauman/lein-figwheel/issues/68#issuecomment-70163386
 #_(defn instance-stats-task []
   (let [instance (atom nil)]
-    (reify 
+    (reify
       HazelcastInstanceAware
         (setHazelcastInstance [_ inst]
           (swap! instance inst))

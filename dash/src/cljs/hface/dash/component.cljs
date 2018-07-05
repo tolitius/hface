@@ -1,16 +1,16 @@
 (ns hface.dash.component
     (:require [reagent.core :as r]
               [hface.charts :as chart-for]
-              [hface.dash.refresh :refer [refresh-interval 
-                                          refresh-cpu 
-                                          refresh-mem 
-                                          refresh-os-mem 
+              [hface.dash.refresh :refer [refresh-interval
+                                          refresh-cpu
+                                          refresh-mem
+                                          refresh-os-mem
                                           refresh-stats
                                           update-map-area
                                           update-q-area]]
-              [hface.stats :refer [members 
+              [hface.stats :refer [members
                                    cluster-name
-                                   map-ops 
+                                   map-ops
                                    map-highlevel
                                    q-ops
                                    q-highlevel]]
@@ -35,10 +35,10 @@
 (every refresh-interval #(refresh-stats stats))
 
 ;; to be unmountable. once I figure out how to check if component is mounted to a node, this can go
-(def empty-component 
-  (fn [] nil)) 
+(def empty-component
+  (fn [] nil))
 
-(defn f-to-react 
+(defn f-to-react
  "react component needs to return [:div] or nil"
   [f]
   (fn [] (f) nil))
@@ -49,17 +49,17 @@
   (let [div (r/atom nil)
         c (atom nil)
         refresh-it (with-meta (f-to-react #(refresh stats @div))
-                              {:component-did-mount (fn [] (let [ui (ui-component clazz)] 
+                              {:component-did-mount (fn [] (let [ui (ui-component clazz)]
                                                               (reset! c ui)
                                                               (reset! div ui)))
                                :component-will-unmount #(.destroy @c)})]
     (fn []
-      [:div {:class clazz} 
+      [:div {:class clazz}
         [refresh-it]])))
 
-(defn cpu-usage [] 
-  (with-refresh refresh-cpu 
-                :cpu-usage 
+(defn cpu-usage []
+  (with-refresh refresh-cpu
+                :cpu-usage
                 chart-for/cpu-gauge))
 
 (defn memory-usage []
@@ -105,17 +105,17 @@
 
 (defn map-chart-name []
   (let [{:keys [map-name
-                mem 
+                mem
                 entries]} (map-highlevel @active-map stats)]
     [:span (str " " map-name ": entries [" entries "], memory [" mem "]")]))
 
 (defn q-chart-name []
   (let [{:keys [q-name
-                mem 
+                mem
                 entries]} (q-highlevel @active-q stats)]
     [:span (str " " q-name ": entries [" entries "], memory [" mem "]")]))
 
-(defn switch-to-chart [c-name c-area 
+(defn switch-to-chart [c-name c-area
                        f-name f-area]
     (r/unmount-component-at-node c-area)
     (r/unmount-component-at-node c-name)
@@ -126,17 +126,17 @@
   ;; TODO: check if currently the same to noop
   (reset! active-map {:m-name m :m-type t})
   (let [{:keys [cluster-area-chart chart-name]} divs]
-    (switch-to-chart chart-name 
-                     cluster-area-chart 
-                     map-chart-name 
+    (switch-to-chart chart-name
+                     cluster-area-chart
+                     map-chart-name
                      map-stats)))
 
 (defn switch-to-q [q t]
   ;; TODO: check if currently the same to noop
   (reset! active-q {:q-name q :q-type t})
   (let [{:keys [cluster-area-chart chart-name]} divs]
-    (switch-to-chart chart-name 
-                     cluster-area-chart 
-                     q-chart-name 
+    (switch-to-chart chart-name
+                     cluster-area-chart
+                     q-chart-name
                      q-stats)))
 

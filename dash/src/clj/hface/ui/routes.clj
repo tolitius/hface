@@ -16,7 +16,7 @@
     (let [interval 5]
                    ;; (or (env :refresh-interval) 4)]                   ;; TODO: cprop it
       (info "[hface]: scheduling cluster stats collector to run every " interval " seconds")
-      ;; (if (env :dev?) 
+      ;; (if (env :dev?)
       ;;   (doall (cluster-of 1)))                                      ;; in dev mode start a one node cluster
       (collect-stats interval)
       (reset! collecting? true))))
@@ -24,7 +24,7 @@
 (def h-routes
   (let [collecting? (atom false)]
     (c/routes
-      (GET "/" [] 
+      (GET "/" []
            (collect-on-start! collecting?)                           ;; possibly split UI from collector, then it's not needed here
            (render-file "templates/index.html" {:dev true}))         ;; TODO: cprop the dev prop
 
