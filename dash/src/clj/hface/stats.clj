@@ -38,13 +38,24 @@
              (warn "could not read stats from node [" host "]: " (.getMessage t)))))
       (member-statuses instance))))
 
+(defn merge-nested
+  "to aggregate nested maps: i.e. [{:map-stats {:near-cache ...}}
+                                   {:map-stats {:near-cache ...}}]"
+  [v1 v2]
+  (let [add (fn [x y] (if (number? x)
+                        (+' x y)
+                        x))]
+    (if-not (map? v1)
+      (add v1 v2)
+      (apply merge-with add [v1 v2]))))
+
 (defn merge-stats [kind i-stats]
   (let [ms (map #(-> % :member-state kind) i-stats)
         ms (->> ms
                 (apply interleave)
                 (group-by first))
         groupped (do-with-values ms #(map second %))]
-    {kind (do-with-values groupped #(apply merge-with +' %))}))
+    {kind (do-with-values groupped #(apply merge-with merge-nested %))}))
 
 (defn aggregate-across-cluster [i-stats]
   (into {}
