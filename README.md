@@ -56,7 +56,9 @@ hface dashboard relies on a small configuraion file that can be pointed to by `-
 
 ### from sources
 
-you would need [lein](https://leiningen.org) (if you come from Java think maven) to compile and build the single runnable jar, a.k.a. an uberjar. lein is straighforward to install: just [download the script](https://leiningen.org/#install) and run it.
+you would need [lein](https://leiningen.org) (if you come from Java think maven) to compile and build a single runnable jar, a.k.a. an uberjar.
+
+lein is straighforward to install: just [download the script](https://leiningen.org/#install) and run it.
 
 * clone the repo (e.g. `git clone https://github.com/tolitius/hface.git`)
 * `cd hface/dash`
