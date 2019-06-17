@@ -8,7 +8,7 @@ Hazelcast cluster monitoring and debugging app
 
 ## The Gist
 
-`hface` monitors a Hazelcast cluster in real time. It currently supports maps, multimaps and queues. 
+`hface` monitors a Hazelcast cluster in real time. It currently supports maps, multimaps and queues.
 Support for other distributed data structures is coming.
 
 In order to monitor a remote Hazelcast cluster add an `8K` jar dependency to it:
@@ -21,7 +21,7 @@ or
 <dependency>
   <groupId>org.hface</groupId>
   <artifactId>hface-client</artifactId>
-  <version>0.1.5</version>
+  <version>0.1.6</version>
 </dependency>
 ```
 
@@ -74,6 +74,6 @@ then, for joy, go to [http://localhost:3000/](http://localhost:3000/)
 
 ## License
 
-Copyright © 2018 tolitius
+Copyright © 2019 tolitius
 
 Distributed under the Eclipse Public License, the same as Clojure.
