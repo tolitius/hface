@@ -53,6 +53,21 @@ hface dashboard relies on a small configuraion file that can be pointed to by `-
              :group-name "dev"                          ;; creds to the cluster (dev/dev-pass are hz defaults)
              :group-password "dev-pass"}}
 ```
+### from release
+
+download the hface release from [releases](https://github.com/tolitius/hface/releases) i.e.:
+
+```
+$ wget https://github.com/tolitius/hface/releases/download/v0.1.0/hface-dash-0.1.0.jar
+```
+
+run it:
+
+```
+$ java -jar -Dconf=/opt/app/hface/hface.conf hface-dash-0.1.0.jar
+```
+
+then, for joy, go to [http://localhost:3000/](http://localhost:3000/)
 
 ### from sources
 
