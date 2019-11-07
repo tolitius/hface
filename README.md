@@ -53,9 +53,9 @@ hface dashboard relies on a small configuraion file that can be pointed to by `-
              :group-name "dev"                          ;; creds to the cluster (dev/dev-pass are hz defaults)
              :group-password "dev-pass"}}
 ```
-### from release
+### from releases
 
-download the hface release from [releases](https://github.com/tolitius/hface/releases) i.e.:
+download the hface release from [releases](https://github.com/tolitius/hface/releases) i.e. let's say the version is `0.1.0`:
 
 ```
 $ wget https://github.com/tolitius/hface/releases/download/v0.1.0/hface-dash-0.1.0.jar
@@ -68,6 +68,8 @@ $ java -jar -Dconf=/opt/app/hface/hface.conf hface-dash-0.1.0.jar
 ```
 
 then, for joy, go to [http://localhost:3000/](http://localhost:3000/)
+
+###### _`/opt/app/hface/hface.conf` is a sample path to the config file, replace it with your path_
 
 ### from sources
 
@@ -86,6 +88,20 @@ lein is straighforward to install: just [download the script](https://leiningen.
 * `java -jar -Dconf=/path-to/hface.conf target/hface-dash.jar`
 
 then, for joy, go to [http://localhost:3000/](http://localhost:3000/)
+
+##### lein version
+
+starting from 2.9.0+ lein brings newer deps that break backwards compatibility as discussed in [this](https://github.com/oakes/Nightlight/issues/53) and [this](https://github.com/tolitius/hface/issues/11) issues. If you experience a problem building hface from sources:
+
+```
+$ lein downgrade 2.8.3
+$ lein do clean, ring uberjar
+```
+which will work, and then:
+```
+$ lein upgrade
+```
+to bring you back to the latest `lein` version.
 
 ## License
 
