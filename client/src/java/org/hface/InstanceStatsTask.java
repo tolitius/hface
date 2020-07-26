@@ -2,11 +2,13 @@ package org.hface;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.HazelcastInstanceAware;
-import com.hazelcast.instance.HazelcastInstanceImpl;
-import com.hazelcast.instance.HazelcastInstanceProxy;
+// import com.hazelcast.instance.HazelcastInstanceImpl;              // hz < 4.0
+// import com.hazelcast.instance.HazelcastInstanceProxy;
+import com.hazelcast.instance.impl.HazelcastInstanceImpl;            // hz >= 4.0
+import com.hazelcast.instance.impl.HazelcastInstanceProxy;
 import com.hazelcast.logging.ILogger;
 import com.hazelcast.logging.Logger;
-// import com.hazelcast.management.TimedMemberStateFactory;                // hz <  3.5
+// import com.hazelcast.management.TimedMemberStateFactory;          // hz <  3.5
 import com.hazelcast.internal.management.TimedMemberStateFactory;    // hz >= 3.5
 
 import java.io.Serializable;

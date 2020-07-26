@@ -13,7 +13,9 @@ Support for other distributed data structures is coming.
 
 In order to monitor a remote Hazelcast cluster add an `8K` jar dependency to it:
 
-[![Clojars Project](http://clojars.org/org.hface/hface-client/latest-version.svg)](http://clojars.org/org.hface/hface-client)
+```clojure
+[org.hface/hface-client "0.1.6"]
+```
 
 or
 
