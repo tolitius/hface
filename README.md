@@ -1,6 +1,17 @@
 # hface
 
-Hazelcast cluster monitoring and debugging app
+Hazelcast cluster monitoring and debugging dashboard
+
+- [What do you mean?](#what-do-you-mean)
+- [The Gist](#the-gist)
+- [Visual](#visual)
+  - [ASCII](#ascii)
+- [Run it](#run-it)
+  - [hface config](#hface-config)
+  - [from releases](#from-releases)
+  - [from sources](#from-sources)
+  - [for pre Hazelcast 4.0](#for-pre-hazelcast-40)
+- [License](#license)
 
 ## What do you mean?
 
@@ -14,7 +25,7 @@ Support for other distributed data structures is coming.
 In order to monitor a remote Hazelcast cluster add an `8K` jar dependency to it:
 
 ```clojure
-[org.hface/hface-client "0.1.6"]
+[org.hface/hface-client "0.1.8"]
 ```
 
 or
@@ -23,7 +34,7 @@ or
 <dependency>
   <groupId>org.hface</groupId>
   <artifactId>hface-client</artifactId>
-  <version>0.1.6</version>
+  <version>0.1.8</version>
 </dependency>
 ```
 
@@ -43,30 +54,30 @@ All the stats are also available in JSON via `/stats`:
 
 ## Run it
 
+> _for **pre** Hazelcast 4.0+ clusters: hface config and deps are bit different and the running process is described [here](#for-pre-hazelcast-40)_
+
 ### hface config
 
 hface dashboard relies on a small configuraion file that can be pointed to by `-Dconf=path-to-config`. Here is a sample config:
 
 ```clojure
-{:collector {:refresh-interval 4}                       ;; refresh cluster stats every 4 seconds
- :hz-client {:hosts ["127.0.0.1" "127.0.0.2"]           ;; hazelcast cluster hosts/ips
-             :retry-ms 5000                             ;; retry to reconnect in 5 seconds
-             :retry-max 720000                          ;; 720000 * 5000 = one hour
-             :group-name "dev"                          ;; creds to the cluster (dev/dev-pass are hz defaults)
-             :group-password "dev-pass"}}
+{:collector {:refresh-interval 4}     ;; refresh cluster stats every 4 seconds
+ :hz-client {:hosts ["127.0.0.1"]     ;; hazelcast cluster hosts/ips
+             :cluster-name "dev"}}    ;; cluster name to connect to
 ```
+
 ### from releases
 
-download the hface release from [releases](https://github.com/tolitius/hface/releases) i.e. let's say the version is `0.1.0`:
+download the hface release from [releases](https://github.com/tolitius/hface/releases) i.e. let's say the version is `0.1.1`:
 
 ```
-$ wget https://github.com/tolitius/hface/releases/download/v0.1.0/hface-dash-0.1.0.jar
+$ wget https://github.com/tolitius/hface/releases/download/v0.1.1/hface-dash-0.1.1.jar
 ```
 
 run it:
 
 ```
-$ java -jar -Dconf=/opt/app/hface/hface.conf hface-dash-0.1.0.jar
+$ java -jar -Dconf=/opt/app/hface/hface.conf hface-dash-0.1.1.jar
 ```
 
 then, for joy, go to [http://localhost:3000/](http://localhost:3000/)
@@ -74,7 +85,6 @@ then, for joy, go to [http://localhost:3000/](http://localhost:3000/)
 ###### _`/opt/app/hface/hface.conf` is a sample path to the config file, replace it with your path_
 
 ### from sources
-
 
 #### get ready
 
@@ -105,8 +115,50 @@ $ lein upgrade
 ```
 to bring you back to the latest `lein` version.
 
+### for pre Hazelcast 4.0
+
+In case you are working with a Hazelcast `3.x.x` clusters:
+
+#### hface client
+
+bring `0.1.6` hface client instead of the latest:
+
+```
+[org.hface/hface-client "0.1.6"]
+```
+
+#### hface config
+
+hface dashboard relies on a small configuraion file that can be pointed to by `-Dconf=path-to-config`. Here is a sample config:
+
+```clojure
+{:collector {:refresh-interval 4}                       ;; refresh cluster stats every 4 seconds
+ :hz-client {:hosts ["127.0.0.1" "127.0.0.2"]           ;; hazelcast cluster hosts/ips
+             :retry-ms 5000                             ;; retry to reconnect in 5 seconds
+             :retry-max 720000                          ;; 720000 * 5000 = one hour
+             :group-name "dev"                          ;; creds to the cluster (dev/dev-pass are hz defaults)
+             :group-password "dev-pass"}}
+```
+#### from releases
+
+download the hface `0.1.0` release from [releases](https://github.com/tolitius/hface/releases):
+
+```
+$ wget https://github.com/tolitius/hface/releases/download/v0.1.0/hface-dash-0.1.0.jar
+```
+
+run it:
+
+```
+$ java -jar -Dconf=/opt/app/hface/hface.conf hface-dash-0.1.0.jar
+```
+
+then, for joy, go to [http://localhost:3000/](http://localhost:3000/)
+
+###### _`/opt/app/hface/hface.conf` is a sample path to the config file, replace it with your path_
+
 ## License
 
-Copyright © 2019 tolitius
+Copyright © 2020 tolitius
 
 Distributed under the Eclipse Public License, the same as Clojure.
