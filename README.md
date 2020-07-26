@@ -54,7 +54,7 @@ All the stats are also available in JSON via `/stats`:
 
 ## Run it
 
-> _for **pre** Hazelcast 4.0+ clusters: hface config and deps are bit different and the running process is described [here](#for-pre-hazelcast-40)_
+> _for **pre** Hazelcast 4.0+ clusters: hface config and deps are different and to run it follow [this](#for-pre-hazelcast-40)_
 
 ### hface config
 
