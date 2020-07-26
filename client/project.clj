@@ -1,4 +1,4 @@
-(defproject org.hface/hface-client "0.1.7"
+(defproject org.hface/hface-client "0.1.8"
   :description "look your Hazelcast cluster in the face!"
   :url "https://github.com/tolitius/hface"
   :license {:name "Eclipse Public License"

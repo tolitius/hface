@@ -1,4 +1,4 @@
-(defproject org.hface/hface-dash "0.1.0-SNAPSHOT"
+(defproject org.hface/hface-dash "0.1.1-SNAPSHOT"
   :description "look your Hazelcast cluster in the face!"
   :url "https://github.com/tolitius/hface"
   :license {:name "Eclipse Public License"
@@ -9,7 +9,7 @@
   :jvm-opts ["-Dconf=./resources/conf/hface.conf"]
 
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [chazel "0.1.18"]
+                 [tolitius/chazel "0.1.23"]
                  [cprop "0.1.7"]
                  [reagent "0.6.0-alpha"]
                  [reagent-utils "0.1.8"]

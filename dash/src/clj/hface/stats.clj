@@ -1,5 +1,5 @@
 (ns hface.stats
-  (:require [chazel.core :refer [proxy-to-instance client-instance]]
+  (:require [chazel.core :refer [unproxy client-instance]]
             [hface.util :refer [keys-to-keywords do-with-values]]
             [cprop.core :refer [load-config]]
             [clojure.java.data :as data]
@@ -119,7 +119,7 @@
 
 #_(defn instance-stats [instance]
   (-> instance
-    proxy-to-instance
+    unproxy
     (TimedMemberStateFactory.)
     (.createTimedMemberState)
     (.toJson)
